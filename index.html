@@ -1,0 +1,330 @@
+<?php
+session_start();
+
+// ---------- डेटाबेस कनेक्शन ----------
+$conn = new mysqli("localhost", "root", "", "gram_panchayat_db");
+if ($conn->connect_error) die("DB Error: " . $conn->connect_error);
+
+// ---------- लॉगिन क्रेडेंशियल ----------
+define('ADMIN_USER', 'admin');
+define('ADMIN_PASS', 'admin123');
+
+// ---------- लॉगआउट ----------
+if (isset($_GET['logout'])) { session_destroy(); header("Location: " . $_SERVER['PHP_SELF']); exit; }
+
+// ---------- लॉगिन हैंडलर ----------
+if (isset($_POST['login'])) {
+    if ($_POST['username'] === ADMIN_USER && $_POST['password'] === ADMIN_PASS) {
+        $_SESSION['admin'] = true;
+    } else {
+        $login_error = "❌ गलत यूज़रनेम या पासवर्ड!";
+    }
+}
+
+// ---------- अगर लॉगिन नहीं है तो लॉगिन पेज दिखाएँ ----------
+if (!isset($_SESSION['admin'])) {
+    ?>
+    <!DOCTYPE html><html lang="hi"><head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>लॉगिन - ग्राम पंचायत सामलीपठार</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>body{background:linear-gradient(135deg,#138808,#FF9933);height:100vh;display:flex;align-items:center;}</style>
+    </head><body><div class="container"><div class="row justify-content-center"><div class="col-md-5">
+        <div class="card shadow-lg"><div class="card-header bg-dark text-white text-center">
+            <h3>🗳️ ग्राम पंचायत सामलीपठार</h3><p class="mb-0">चुनाव प्रसार - एडमिन लॉगिन</p>
+        </div><div class="card-body">
+            <?php if(isset($login_error)) echo "<div class='alert alert-danger'>$login_error</div>"; ?>
+            <form method="POST">
+                <div class="mb-3"><label class="form-label">यूज़रनेम</label>
+                    <input type="text" name="username" class="form-control" value="admin" required></div>
+                <div class="mb-3"><label class="form-label">पासवर्ड</label>
+                    <input type="password" name="password" class="form-control" value="admin123" required></div>
+                <button type="submit" name="login" class="btn btn-success w-100">🔐 लॉगिन करें</button>
+            </form>
+            <p class="text-muted mt-3 mb-0 text-center"><small>Demo: admin / admin123</small></p>
+        </div></div>
+    </div></div></div></body></html>
+    <?php
+    exit;
+}
+
+// ---------- CRUD ऑपरेशंस ----------
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['admin'])) {
+
+    if (isset($_POST['add_candidate'])) {
+        $s = $conn->prepare("INSERT INTO candidates (name,party_name,symbol,description,village) VALUES (?,?,?,?,?)");
+        $s->bind_param("sssss", $_POST['name'],$_POST['party_name'],$_POST['symbol'],$_POST['description'],$_POST['village']);
+        $s->execute(); $s->close();
+    }
+    elseif (isset($_POST['edit_candidate'])) {
+        $s = $conn->prepare("UPDATE candidates SET name=?,party_name=?,symbol=?,description=?,village=? WHERE id=?");
+        $s->bind_param("sssssi", $_POST['name'],$_POST['party_name'],$_POST['symbol'],$_POST['description'],$_POST['village'],$_POST['edit_id']);
+        $s->execute(); $s->close();
+    }
+    elseif (isset($_POST['delete_candidate'])) {
+        $s = $conn->prepare("DELETE FROM candidates WHERE id=?");
+        $s->bind_param("i", $_POST['delete_id']); $s->execute(); $s->close();
+    }
+    elseif (isset($_POST['add_voter'])) {
+        $s = $conn->prepare("INSERT INTO voters (name,voter_id,village,booth) VALUES (?,?,?,?)");
+        $s->bind_param("ssss", $_POST['voter_name'],$_POST['voter_id'],$_POST['village'],$_POST['booth']);
+        $s->execute(); $s->close();
+    }
+    elseif (isset($_POST['edit_voter'])) {
+        $s = $conn->prepare("UPDATE voters SET name=?,voter_id=?,village=?,booth=? WHERE id=?");
+        $s->bind_param("ssssi", $_POST['voter_name'],$_POST['voter_id'],$_POST['village'],$_POST['booth'],$_POST['edit_voter_id']);
+        $s->execute(); $s->close();
+    }
+    elseif (isset($_POST['delete_voter'])) {
+        $s = $conn->prepare("DELETE FROM voters WHERE id=?");
+        $s->bind_param("i", $_POST['delete_voter_id']); $s->execute(); $s->close();
+    }
+    elseif (isset($_POST['add_material'])) {
+        $s = $conn->prepare("INSERT INTO campaign_materials (title,description,category) VALUES (?,?,?)");
+        $s->bind_param("sss", $_POST['title'],$_POST['material_desc'],$_POST['category']);
+        $s->execute(); $s->close();
+    }
+    elseif (isset($_POST['edit_material'])) {
+        $s = $conn->prepare("UPDATE campaign_materials SET title=?,description=?,category=? WHERE id=?");
+        $s->bind_param("sssi", $_POST['title'],$_POST['material_desc'],$_POST['category'],$_POST['edit_material_id']);
+        $s->execute(); $s->close();
+    }
+    elseif (isset($_POST['delete_material'])) {
+        $s = $conn->prepare("DELETE FROM campaign_materials WHERE id=?");
+        $s->bind_param("i", $_POST['delete_material_id']); $s->execute(); $s->close();
+    }
+
+    header("Location: " . $_SERVER['PHP_SELF']); exit;
+}
+
+// ---------- काउंट्स ----------
+$total_candidates = $conn->query("SELECT COUNT(*) c FROM candidates")->fetch_assoc()['c'];
+$total_voters = $conn->query("SELECT COUNT(*) c FROM voters")->fetch_assoc()['c'];
+$total_materials = $conn->query("SELECT COUNT(*) c FROM campaign_materials")->fetch_assoc()['c'];
+?>
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ग्राम पंचायत सामलीपठार - एडमिन डैशबोर्ड</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body { background: #f4f6f9; }
+.stat-card { border-left: 5px solid; transition: transform 0.2s; }
+.stat-card:hover { transform: translateY(-5px); }
+</style>
+</head>
+<body>
+
+<!-- नेवबार -->
+<nav class="navbar navbar-dark bg-success shadow">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">🗳️ ग्राम पंचायत सामलीपठार - चुनाव प्रसार</span>
+    <div>
+      <span class="text-white me-3">👤 admin</span>
+      <a href="?logout=1" class="btn btn-outline-light btn-sm">लॉगआउट</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-4">
+
+  <!-- डैशबोर्ड कार्ड्स -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="card stat-card border-primary shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">कुल उम्मीदवार</h6>
+          <h2 class="text-primary"><?= $total_candidates ?></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card stat-card border-success shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">कुल मतदाता</h6>
+          <h2 class="text-success"><?= $total_voters ?></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card stat-card border-warning shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">प्रचार सामग्री</h6>
+          <h2 class="text-warning"><?= $total_materials ?></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- टैब्स -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#candidates">👥 उम्मीदवार</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#voters">🧑‍🤝‍🧑 मतदाता</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#materials">📢 प्रचार सामग्री</a></li>
+  </ul>
+
+  <div class="tab-content mt-3">
+
+    <!-- ================= CANDIDATES ================= -->
+    <div class="tab-pane fade show active" id="candidates">
+      <div class="card shadow-sm"><div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-dark">
+            <tr><th>नाम</th><th>पार्टी</th><th>चिन्ह</th><th>विवरण</th><th>गाँव</th><th width="200">एक्शन</th></tr>
+          </thead>
+          <tbody>
+          <?php $r = $conn->query("SELECT * FROM candidates ORDER BY id DESC");
+          while($row = $r->fetch_assoc()): ?>
+            <tr>
+              <td><strong><?= htmlspecialchars($row['name']) ?></strong></td>
+              <td><?= htmlspecialchars($row['party_name']) ?></td>
+              <td><?= htmlspecialchars($row['symbol']) ?></td>
+              <td><?= htmlspecialchars($row['description']) ?></td>
+              <td><?= htmlspecialchars($row['village']) ?></td>
+              <td>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#ec<?= $row['id'] ?>">✏️ एडिट</button>
+                <form method="POST" style="display:inline;">
+                  <input type="hidden" name="delete_id" value="<?= $row['id'] ?>">
+                  <button type="submit" name="delete_candidate" class="btn btn-danger btn-sm" onclick="return confirm('हटाना है?')">🗑️</button>
+                </form>
+              </td>
+            </tr>
+            <tr class="collapse" id="ec<?= $row['id'] ?>"><td colspan="6">
+              <form method="POST" class="row g-2 p-2 bg-light">
+                <input type="hidden" name="edit_id" value="<?= $row['id'] ?>">
+                <div class="col-md-2"><input type="text" name="name" value="<?= $row['name'] ?>" class="form-control form-control-sm" required></div>
+                <div class="col-md-2"><input type="text" name="party_name" value="<?= $row['party_name'] ?>" class="form-control form-control-sm"></div>
+                <div class="col-md-2"><input type="text" name="symbol" value="<?= $row['symbol'] ?>" class="form-control form-control-sm"></div>
+                <div class="col-md-3"><input type="text" name="description" value="<?= $row['description'] ?>" class="form-control form-control-sm"></div>
+                <div class="col-md-2"><input type="text" name="village" value="<?= $row['village'] ?>" class="form-control form-control-sm"></div>
+                <div class="col-md-1"><button type="submit" name="edit_candidate" class="btn btn-success btn-sm w-100">सेव</button></div>
+              </form>
+            </td></tr>
+          <?php endwhile; ?>
+          </tbody>
+          <tfoot><tr class="table-light"><td colspan="6">
+            <form method="POST" class="row g-2">
+              <div class="col-md-2"><input type="text" name="name" placeholder="नाम*" class="form-control form-control-sm" required></div>
+              <div class="col-md-2"><input type="text" name="party_name" placeholder="पार्टी" class="form-control form-control-sm"></div>
+              <div class="col-md-2"><input type="text" name="symbol" placeholder="चिन्ह" class="form-control form-control-sm"></div>
+              <div class="col-md-3"><input type="text" name="description" placeholder="विवरण" class="form-control form-control-sm"></div>
+              <div class="col-md-2"><input type="text" name="village" value="सामलीपठार" class="form-control form-control-sm"></div>
+              <div class="col-md-1"><button type="submit" name="add_candidate" class="btn btn-primary btn-sm w-100">➕</button></div>
+            </form>
+          </td></tr></tfoot>
+        </table>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ================= VOTERS ================= -->
+    <div class="tab-pane fade" id="voters">
+      <div class="card shadow-sm"><div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-dark">
+            <tr><th>नाम</th><th>Voter ID</th><th>गाँव</th><th>बूथ</th><th width="200">एक्शन</th></tr>
+          </thead>
+          <tbody>
+          <?php $r = $conn->query("SELECT * FROM voters ORDER BY id DESC");
+          while($row = $r->fetch_assoc()): ?>
+            <tr>
+              <td><strong><?= htmlspecialchars($row['name']) ?></strong></td>
+              <td><?= htmlspecialchars($row['voter_id']) ?></td>
+              <td><?= htmlspecialchars($row['village']) ?></td>
+              <td><?= htmlspecialchars($row['booth']) ?></td>
+              <td>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#ev<?= $row['id'] ?>">✏️ एडिट</button>
+                <form method="POST" style="display:inline;">
+                  <input type="hidden" name="delete_voter_id" value="<?= $row['id'] ?>">
+                  <button type="submit" name="delete_voter" class="btn btn-danger btn-sm" onclick="return confirm('हटाना है?')">🗑️</button>
+                </form>
+              </td>
+            </tr>
+            <tr class="collapse" id="ev<?= $row['id'] ?>"><td colspan="5">
+              <form method="POST" class="row g-2 p-2 bg-light">
+                <input type="hidden" name="edit_voter_id" value="<?= $row['id'] ?>">
+                <div class="col-md-3"><input type="text" name="voter_name" value="<?= $row['name'] ?>" class="form-control form-control-sm" required></div>
+                <div class="col-md-3"><input type="text" name="voter_id" value="<?= $row['voter_id'] ?>" class="form-control form-control-sm" required></div>
+                <div class="col-md-2"><input type="text" name="village" value="<?= $row['village'] ?>" class="form-control form-control-sm"></div>
+                <div class="col-md-2"><input type="text" name="booth" value="<?= $row['booth'] ?>" class="form-control form-control-sm"></div>
+                <div class="col-md-2"><button type="submit" name="edit_voter" class="btn btn-success btn-sm w-100">सेव</button></div>
+              </form>
+            </td></tr>
+          <?php endwhile; ?>
+          </tbody>
+          <tfoot><tr class="table-light"><td colspan="5">
+            <form method="POST" class="row g-2">
+              <div class="col-md-3"><input type="text" name="voter_name" placeholder="नाम*" class="form-control form-control-sm" required></div>
+              <div class="col-md-3"><input type="text" name="voter_id" placeholder="Voter ID*" class="form-control form-control-sm" required></div>
+              <div class="col-md-2"><input type="text" name="village" value="सामलीपठार" class="form-control form-control-sm"></div>
+              <div class="col-md-2"><input type="text" name="booth" placeholder="बूथ" class="form-control form-control-sm"></div>
+              <div class="col-md-2"><button type="submit" name="add_voter" class="btn btn-primary btn-sm w-100">➕ जोड़ें</button></div>
+            </form>
+          </td></tr></tfoot>
+        </table>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ================= MATERIALS ================= -->
+    <div class="tab-pane fade" id="materials">
+      <div class="card shadow-sm"><div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-dark">
+            <tr><th>शीर्षक</th><th>विवरण</th><th>श्रेणी</th><th width="200">एक्शन</th></tr>
+          </thead>
+          <tbody>
+          <?php $r = $conn->query("SELECT * FROM campaign_materials ORDER BY id DESC");
+          while($row = $r->fetch_assoc()): ?>
+            <tr>
+              <td><strong><?= htmlspecialchars($row['title']) ?></strong></td>
+              <td><?= htmlspecialchars($row['description']) ?></td>
+              <td><span class="badge bg-info text-dark"><?= htmlspecialchars($row['category']) ?></span></td>
+              <td>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#em<?= $row['id'] ?>">✏️ एडिट</button>
+                <form method="POST" style="display:inline;">
+                  <input type="hidden" name="delete_material_id" value="<?= $row['id'] ?>">
+                  <button type="submit" name="delete_material" class="btn btn-danger btn-sm" onclick="return confirm('हटाना है?')">🗑️</button>
+                </form>
+              </td>
+            </tr>
+            <tr class="collapse" id="em<?= $row['id'] ?>"><td colspan="4">
+              <form method="POST" class="row g-2 p-2 bg-light">
+                <input type="hidden" name="edit_material_id" value="<?= $row['id'] ?>">
+                <div class="col-md-3"><input type="text" name="title" value="<?= $row['title'] ?>" class="form-control form-control-sm" required></div>
+                <div class="col-md-5"><input type="text" name="material_desc" value="<?= $row['description'] ?>" class="form-control form-control-sm"></div>
+                <div class="col-md-2"><input type="text" name="category" value="<?= $row['category'] ?>" class="form-control form-control-sm"></div>
+                <div class="col-md-2"><button type="submit" name="edit_material" class="btn btn-success btn-sm w-100">सेव</button></div>
+              </form>
+            </td></tr>
+          <?php endwhile; ?>
+          </tbody>
+          <tfoot><tr class="table-light"><td colspan="4">
+            <form method="POST" class="row g-2">
+              <div class="col-md-3"><input type="text" name="title" placeholder="शीर्षक*" class="form-control form-control-sm" required></div>
+              <div class="col-md-5"><input type="text" name="material_desc" placeholder="विवरण" class="form-control form-control-sm"></div>
+              <div class="col-md-2"><input type="text" name="category" placeholder="श्रेणी" class="form-control form-control-sm"></div>
+              <div class="col-md-2"><button type="submit" name="add_material" class="btn btn-primary btn-sm w-100">➕ जोड़ें</button></div>
+            </form>
+          </td></tr></tfoot>
+        </table>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="text-center text-muted py-3">
+  ⚡ ग्राम पंचायत सामलीपठार - चुनाव प्रसार प्रणाली v3.0 (Final)
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
