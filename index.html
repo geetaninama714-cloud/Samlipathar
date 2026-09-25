@@ -55,7 +55,7 @@
       color: white;
     }
 
-    /* ---------- Navigation Menu ---------- */
+    /* ---------- Navigation ---------- */
     nav {
       background: #0b3d2e;
       position: sticky;
@@ -88,7 +88,7 @@
       background: #1a6b4a;
     }
 
-    /* ---------- Header / Hero ---------- */
+    /* ---------- Header ---------- */
     header {
       background: linear-gradient(135deg, #0b3d2e, #1a6b4a);
       color: white;
@@ -101,7 +101,6 @@
       font-size: 2.2rem;
       font-weight: 800;
       margin-bottom: 8px;
-      letter-spacing: 0.5px;
     }
 
     header p {
@@ -139,12 +138,11 @@
       margin-bottom: 18px;
     }
 
-    /* ---------- Home Page Quick Cards ---------- */
+    /* ---------- Home Cards ---------- */
     .home-cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 14px;
-      margin-top: 8px;
     }
 
     .home-card {
@@ -256,7 +254,66 @@
       margin-top: 2px;
     }
 
-    /* ---------- Voter List ---------- */
+    /* ---------- Admin Login ---------- */
+    .login-box {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #f9fbfd;
+      border-radius: 16px;
+      padding: 28px 24px;
+      border: 2px solid #cbd6e2;
+      text-align: center;
+    }
+
+    .login-box .lock-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .login-box h3 {
+      color: #0b3d2e;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+
+    .login-box p {
+      font-size: 0.95rem;
+      color: #627d98;
+      margin-bottom: 18px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid #cbd6e2;
+      border-radius: 10px;
+      font-size: 1rem;
+      margin-bottom: 14px;
+      text-align: center;
+      background: white;
+    }
+
+    .login-box input:focus {
+      border-color: #1a6b4a;
+      outline: none;
+    }
+
+    .login-error {
+      color: #d32f2f;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+
+    /* ---------- Voter List (Admin only) ---------- */
+    .admin-panel {
+      display: none;
+    }
+
+    .admin-panel.visible {
+      display: block;
+    }
+
     .voter-controls {
       display: flex;
       flex-wrap: wrap;
@@ -298,7 +355,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.95rem;
-      min-width: 600px;
+      min-width: 700px;
     }
 
     table.voter-table thead {
@@ -316,7 +373,6 @@
     table.voter-table td {
       padding: 11px 14px;
       border-bottom: 1px solid #eef2f6;
-      color: #1e2a3a;
     }
 
     table.voter-table tbody tr:nth-child(even) {
@@ -336,6 +392,50 @@
       border-radius: 20px;
       font-size: 0.82rem;
       white-space: nowrap;
+    }
+
+    /* Call Button */
+    .btn-call {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #25D366;
+      color: white;
+      padding: 7px 14px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .btn-call:hover {
+      background: #1da851;
+    }
+
+    .btn-call.no-number {
+      background: #cbd6e2;
+      color: #627d98;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Logout button */
+    .logout-btn {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+
+    .logout-btn:hover {
+      background: #b71c1c;
     }
 
     /* ---------- Gallery ---------- */
@@ -374,7 +474,6 @@
       display: block;
       font-weight: 600;
       margin-bottom: 6px;
-      color: #1e2a3a;
       font-size: 0.95rem;
     }
 
@@ -385,7 +484,6 @@
       border: 2px solid #cbd6e2;
       border-radius: 10px;
       font-size: 1rem;
-      transition: border-color 0.2s;
       background: #f9fbfd;
     }
 
@@ -406,13 +504,11 @@
       font-size: 1.05rem;
       cursor: pointer;
       text-decoration: none;
-      transition: background 0.2s, transform 0.1s;
       text-align: center;
     }
 
     .btn:hover {
       background: #0b3d2e;
-      transform: translateY(-1px);
     }
 
     .btn-whatsapp {
@@ -462,67 +558,20 @@
 
     /* ---------- Responsive ---------- */
     @media (max-width: 520px) {
-      header {
-        padding: 50px 0 24px;
-      }
-
-      header h1 {
-        font-size: 1.5rem;
-      }
-
-      header p {
-        font-size: 1rem;
-      }
-
-      .candidate-box {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .candidate-info h3 {
-        font-size: 1.3rem;
-      }
-
-      section {
-        padding: 20px 16px;
-      }
-
-      section h2 {
-        font-size: 1.25rem;
-      }
-
-      .vision-list li {
-        font-size: 0.95rem;
-        padding: 12px 14px;
-      }
-
-      .lang-bar {
-        top: 8px;
-        right: 8px;
-      }
-
-      .lang-bar button {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-      }
-
-      nav ul li a {
-        padding: 6px 10px;
-        font-size: 0.85rem;
-      }
-
-      .home-card .label {
-        font-size: 0.95rem;
-      }
-
-      .voter-controls {
-        flex-direction: column;
-      }
-
+      header { padding: 50px 0 24px; }
+      header h1 { font-size: 1.5rem; }
+      header p { font-size: 1rem; }
+      .candidate-box { flex-direction: column; text-align: center; }
+      .candidate-info h3 { font-size: 1.3rem; }
+      section { padding: 20px 16px; }
+      section h2 { font-size: 1.25rem; }
+      .vision-list li { font-size: 0.95rem; padding: 12px 14px; }
+      .lang-bar { top: 8px; right: 8px; }
+      .lang-bar button { padding: 6px 12px; font-size: 0.8rem; }
+      nav ul li a { padding: 6px 10px; font-size: 0.85rem; }
+      .voter-controls { flex-direction: column; }
       .voter-controls select,
-      .voter-controls input {
-        min-width: 100%;
-      }
+      .voter-controls input { min-width: 100%; }
     }
   </style>
 </head>
@@ -540,14 +589,14 @@
       <li><a href="#home" data-hi="होम" data-en="Home">होम</a></li>
       <li><a href="#about" data-hi="परिचय" data-en="About">परिचय</a></li>
       <li><a href="#vision" data-hi="विजन" data-en="Vision">विजन</a></li>
-      <li><a href="#voterlist" data-hi="मतदाता सूची" data-en="Voter List">मतदाता सूची</a></li>
+      <li><a href="#admin" data-hi="एडमिन" data-en="Admin">एडमिन</a></li>
       <li><a href="#gallery" data-hi="गैलरी" data-en="Gallery">गैलरी</a></li>
       <li><a href="#volunteer" data-hi="वालंटियर" data-en="Volunteer">वालंटियर</a></li>
       <li><a href="#contact" data-hi="संपर्क" data-en="Contact">संपर्क</a></li>
     </ul>
   </nav>
 
-  <!-- Header / Hero (also Home top) -->
+  <!-- Header -->
   <header id="home">
     <div class="container">
       <h1 data-hi="Samlipathar Gram Panchayat" data-en="Samlipathar Gram Panchayat">Samlipathar Gram Panchayat</h1>
@@ -558,15 +607,14 @@
 
   <div class="container">
 
-    <!-- ============ HOME PAGE ============ -->
+    <!-- Home Cards -->
     <section id="homepage">
       <h2 data-hi="🏠 होम पेज — एक नज़र में" data-en="🏠 Home Page — At a Glance">🏠 होम पेज — एक नज़र में</h2>
       <p style="margin-bottom:18px;"
-         data-hi="Samlipathar Gram Panchayat चुनाव 2026 के लिए आपका स्वागत है। नीचे दिए गए कार्ड पर क्लिक करके जानकारी देखें।"
-         data-en="Welcome to the Samlipathar Gram Panchayat Election 2026. Click on any card below to view information.">
-        Samlipathar Gram Panchayat चुनाव 2026 के लिए आपका स्वागत है। नीचे दिए गए कार्ड पर क्लिक करके जानकारी देखें।
+         data-hi="Samlipathar Gram Panchayat चुनाव 2026 के लिए आपका स्वागत है।"
+         data-en="Welcome to the Samlipathar Gram Panchayat Election 2026.">
+        Samlipathar Gram Panchayat चुनाव 2026 के लिए आपका स्वागत है।
       </p>
-
       <div class="home-cards">
         <a href="#about" class="home-card">
           <span class="emoji">👤</span>
@@ -576,9 +624,9 @@
           <span class="emoji">🎯</span>
           <span class="label" data-hi="10 संकल्प" data-en="10 Resolutions">10 संकल्प</span>
         </a>
-        <a href="#voterlist" class="home-card">
-          <span class="emoji">📋</span>
-          <span class="label" data-hi="वार्ड-वार मतदाता सूची" data-en="Ward-wise Voter List">वार्ड-वार मतदाता सूची</span>
+        <a href="#admin" class="home-card">
+          <span class="emoji">🔐</span>
+          <span class="label" data-hi="एडमिन लॉगिन" data-en="Admin Login">एडमिन लॉगिन</span>
         </a>
         <a href="#gallery" class="home-card">
           <span class="emoji">📸</span>
@@ -595,14 +643,11 @@
       </div>
     </section>
 
-    <!-- ============ ABOUT ============ -->
+    <!-- About -->
     <section id="about">
       <h2 data-hi="मेरा परिचय" data-en="About Me">मेरा परिचय</h2>
       <div class="candidate-box">
-        <div class="candidate-photo">
-          <!-- यहाँ अपनी फोटो लगाएँ: <img src="photo.jpg" alt="Candidate"> -->
-          👤
-        </div>
+        <div class="candidate-photo">👤</div>
         <div class="candidate-info">
           <h3 data-hi="[आपका नाम]" data-en="[Your Name]">[आपका नाम]</h3>
           <div class="role"
@@ -610,16 +655,15 @@
                data-en="Candidate for Gram Panchayat President — Samlipathar">
             ग्राम पंचायत अध्यक्ष पद के उम्मीदवार — Samlipathar
           </div>
-          <p data-hi="मैं Samlipathar का मूल निवासी हूँ। पिछले कई वर्षों से गाँव के विकास और लोगों की सेवा में सक्रिय हूँ। मेरा उद्देश्य है — पानी, सड़क, शिक्षा और रोज़गार के मुद्दों को प्राथमिकता देना।"
-             data-en="I am a native of Samlipathar. For many years, I have been active in village development and public service. My goal is to prioritize water, roads, education, and employment.">
+          <p data-hi="मैं Samlipathar का मूल निवासी हूँ। पिछले कई वर्षों से गाँव के विकास और लोगों की सेवा में सक्रिय हूँ।"
+             data-en="I am a native of Samlipathar. For many years, I have been active in village development and public service.">
             मैं Samlipathar का मूल निवासी हूँ। पिछले कई वर्षों से गाँव के विकास और लोगों की सेवा में सक्रिय हूँ।
-            मेरा उद्देश्य है — पानी, सड़क, शिक्षा और रोज़गार के मुद्दों को प्राथमिकता देना।
           </p>
         </div>
       </div>
     </section>
 
-    <!-- ============ VISION ============ -->
+    <!-- Vision -->
     <section id="vision">
       <h2 data-hi="मेरा विजन — 10 संकल्प" data-en="My Vision — 10 Resolutions">मेरा विजन — 10 संकल्प</h2>
       <ul class="vision-list">
@@ -636,121 +680,118 @@
       </ul>
     </section>
 
-    <!-- ============ VOTER LIST (Google Sheet) ============ -->
-    <section id="voterlist">
-      <h2 data-hi="📋 वार्ड-वार मतदाता सूची" data-en="📋 Ward-wise Voter List">📋 वार्ड-वार मतदाता सूची</h2>
-      <p style="margin-bottom:16px;"
-         data-hi="नीचे वार्ड चुनें या नाम खोजें। पूरी सूची Google Sheet से जुड़ी है, इसलिए इसे अपडेट करना आसान है।"
-         data-en="Select a ward below or search by name. The full list is linked to a Google Sheet, making it easy to update.">
-        नीचे वार्ड चुनें या नाम खोजें। पूरी सूची Google Sheet से जुड़ी है, इसलिए इसे अपडेट करना आसान है।
-      </p>
+    <!-- ============ ADMIN SECTION ============ -->
+    <section id="admin">
+      <h2 data-hi="🔐 एडमिन लॉगिन — मतदाता सूची" data-en="🔐 Admin Login — Voter List">
+        🔐 एडमिन लॉगिन — मतदाता सूची
+      </h2>
 
-      <div class="voter-controls">
-        <select id="wardFilter" onchange="renderVoterList()">
-          <option value="" data-hi="-- सभी वार्ड --" data-en="-- All Wards --">-- सभी वार्ड --</option>
-        </select>
-        <input type="text" id="searchBox" 
-               data-hi-placeholder="नाम खोजें..." 
-               data-en-placeholder="Search by name..."
-               placeholder="नाम खोजें..." oninput="renderVoterList()">
+      <!-- Public Notice (दिखेगा जब लॉगिन नहीं है) -->
+      <div id="publicNotice">
+        <div class="login-box">
+          <div class="lock-icon">🔒</div>
+          <h3 data-hi="यह सूची केवल Admin के लिए है" data-en="This list is for Admin only">
+            यह सूची केवल Admin के लिए है
+          </h3>
+          <p data-hi="मतदाताओं की निजी जानकारी सार्वजनिक नहीं की जाती। कृपया लॉगिन करें।"
+             data-en="Voter personal information is not made public. Please login.">
+            मतदाताओं की निजी जानकारी सार्वजनिक नहीं की जाती। कृपया लॉगिन करें।
+          </p>
+          <input type="password" id="adminPassword"
+                 data-hi-placeholder="एडमिन पासवर्ड डालें"
+                 data-en-placeholder="Enter admin password"
+                 placeholder="एडमिन पासवर्ड डालें"
+                 onkeydown="if(event.key==='Enter') checkLogin()">
+          <button class="btn" style="width:100%;"
+                  data-hi="लॉगिन करें"
+                  data-en="Login"
+                  onclick="checkLogin()">
+            लॉगिन करें
+          </button>
+          <div class="login-error" id="loginError"></div>
+        </div>
       </div>
 
-      <div class="voter-status" id="voterStatus"
-           data-hi="मतदाता सूची लोड हो रही है..." 
-           data-en="Loading voter list...">
-        मतदाता सूची लोड हो रही है...
-      </div>
+      <!-- Admin Panel (लॉगिन के बाद दिखेगा) -->
+      <div class="admin-panel" id="adminPanel">
+        <button class="logout-btn" onclick="logout()"
+                data-hi="🚪 लॉगआउट"
+                data-en="🚪 Logout">
+          🚪 लॉगआउट
+        </button>
 
-      <div class="voter-table-wrap" id="voterTableWrap" style="display:none;">
-        <table class="voter-table">
-          <thead>
-            <tr>
-              <th data-hi="वार्ड" data-en="Ward">वार्ड</th>
-              <th data-hi="मतदाता का नाम" data-en="Voter Name">मतदाता का नाम</th>
-              <th data-hi="पिता/पति का नाम" data-en="Father/Husband Name">पिता/पति का नाम</th>
-              <th data-hi="उम्र" data-en="Age">उम्र</th>
-              <th data-hi="लिंग" data-en="Gender">लिंग</th>
-              <th data-hi="मोबाइल" data-en="Mobile">मोबाइल</th>
-            </tr>
-          </thead>
-          <tbody id="voterTableBody"></tbody>
-        </table>
+        <p style="margin-bottom:16px; color:#1a6b4a; font-weight:600;"
+           data-hi="✅ आप लॉगिन हैं। नीचे पूरी मतदाता सूची है। किसी भी नाम पर 📞 Call बटन दबाकर सीधे बात करें।"
+           data-en="✅ You are logged in. Below is the full voter list. Tap the 📞 Call button next to any name to call directly.">
+          ✅ आप लॉगिन हैं। नीचे पूरी मतदाता सूची है। किसी भी नाम पर 📞 Call बटन दबाकर सीधे बात करें।
+        </p>
+
+        <div class="voter-controls">
+          <select id="wardFilter" onchange="renderVoterList()">
+            <option value="">-- सभी वार्ड --</option>
+          </select>
+          <input type="text" id="searchBox"
+                 data-hi-placeholder="नाम या मोबाइल खोजें..."
+                 data-en-placeholder="Search name or mobile..."
+                 placeholder="नाम या मोबाइल खोजें..."
+                 oninput="renderVoterList()">
+        </div>
+
+        <div class="voter-status" id="voterStatus"
+             data-hi="मतदाता सूची लोड हो रही है..."
+             data-en="Loading voter list...">
+          मतदाता सूची लोड हो रही है...
+        </div>
+
+        <div class="voter-table-wrap" id="voterTableWrap" style="display:none;">
+          <table class="voter-table">
+            <thead>
+              <tr>
+                <th data-hi="वार्ड" data-en="Ward">वार्ड</th>
+                <th data-hi="मतदाता का नाम" data-en="Voter Name">मतदाता का नाम</th>
+                <th data-hi="पिता/पति" data-en="Father/Husband">पिता/पति</th>
+                <th data-hi="उम्र" data-en="Age">उम्र</th>
+                <th data-hi="लिंग" data-en="Gender">लिंग</th>
+                <th data-hi="मोबाइल" data-en="Mobile">मोबाइल</th>
+                <th data-hi="कॉल करें" data-en="Call">कॉल करें</th>
+              </tr>
+            </thead>
+            <tbody id="voterTableBody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <!-- ============ GALLERY ============ -->
+    <!-- Gallery -->
     <section id="gallery">
       <h2 data-hi="गैलरी — जनसंपर्क की तस्वीरें" data-en="Gallery — Public Outreach Photos">गैलरी — जनसंपर्क की तस्वीरें</h2>
       <div class="gallery">
-        <div class="gallery-item">
-          <!-- <img src="img1.jpg" alt="Rally"> -->
-          <span data-hi="📸 जनसभा की तस्वीर" data-en="📸 Public meeting photo">📸 जनसभा की तस्वीर</span>
-        </div>
-        <div class="gallery-item">
-          <!-- <img src="img2.jpg" alt="Village visit"> -->
-          <span data-hi="📸 गाँव का दौरा" data-en="📸 Village visit">📸 गाँव का दौरा</span>
-        </div>
-        <div class="gallery-item">
-          <!-- <img src="img3.jpg" alt="Meeting women"> -->
-          <span data-hi="📸 महिलाओं से मुलाकात" data-en="📸 Meeting with women">📸 महिलाओं से मुलाकात</span>
-        </div>
-        <div class="gallery-item">
-          <!-- <img src="img4.jpg" alt="Youth meeting"> -->
-          <span data-hi="📸 युवाओं के साथ बैठक" data-en="📸 Meeting with youth">📸 युवाओं के साथ बैठक</span>
-        </div>
+        <div class="gallery-item"><span data-hi="📸 जनसभा" data-en="📸 Public meeting">📸 जनसभा</span></div>
+        <div class="gallery-item"><span data-hi="📸 गाँव का दौरा" data-en="📸 Village visit">📸 गाँव का दौरा</span></div>
+        <div class="gallery-item"><span data-hi="📸 महिलाओं से मुलाकात" data-en="📸 Meeting women">📸 महिलाओं से मुलाकात</span></div>
+        <div class="gallery-item"><span data-hi="📸 युवाओं के साथ" data-en="📸 With youth">📸 युवाओं के साथ</span></div>
       </div>
-      <p style="margin-top:14px; font-size:0.95rem; color:#627d98;"
-         data-hi="(अपनी असली तस्वीरें लगाने के लिए ऊपर दिए गए कोड में <img> टैग का उपयोग करें।)"
-         data-en="(To add your real photos, use the <img> tag in the code above.)">
-        (अपनी असली तस्वीरें लगाने के लिए ऊपर दिए गए कोड में &lt;img&gt; टैग का उपयोग करें।)
-      </p>
     </section>
 
-    <!-- ============ VOLUNTEER ============ -->
+    <!-- Volunteer -->
     <section id="volunteer">
-      <h2 data-hi="वालंटियर बनें — प्रचार में साथ दें" data-en="Become a Volunteer — Join the Campaign">वालंटियर बनें — प्रचार में साथ दें</h2>
-      <p style="margin-bottom:16px;"
-         data-hi="अगर आप Samlipathar के विकास के लिए मेरे साथ जुड़ना चाहते हैं, तो नीचे फॉर्म भरें। मैं या मेरी टीम आपसे संपर्क करेगी।"
-         data-en="If you want to join me for the development of Samlipathar, fill the form below. I or my team will contact you.">
-        अगर आप Samlipathar के विकास के लिए मेरे साथ जुड़ना चाहते हैं, तो नीचे फॉर्म भरें।
-        मैं या मेरी टीम आपसे संपर्क करेगी।
-      </p>
-      <form onsubmit="alert(document.documentElement.lang === 'hi' ? 'धन्यवाद! आपकी जानकारी सबमिट हो गई है। हम जल्द संपर्क करेंगे।' : 'Thank you! Your information has been submitted. We will contact you soon.'); return false;">
+      <h2 data-hi="वालंटियर बनें" data-en="Become a Volunteer">वालंटियर बनें</h2>
+      <form onsubmit="alert(document.documentElement.lang === 'hi' ? 'धन्यवाद!' : 'Thank you!'); return false;">
         <div class="form-group">
-          <label for="name" data-hi="आपका नाम *" data-en="Your Name *">आपका नाम *</label>
-          <input type="text" id="name"
-                 data-hi-placeholder="जैसे: रामलाल यादव"
-                 data-en-placeholder="e.g. Ramlal Yadav"
-                 placeholder="जैसे: रामलाल यादव" required>
+          <label data-hi="आपका नाम *" data-en="Your Name *">आपका नाम *</label>
+          <input type="text" required>
         </div>
         <div class="form-group">
-          <label for="mobile" data-hi="मोबाइल नंबर *" data-en="Mobile Number *">मोबाइल नंबर *</label>
-          <input type="tel" id="mobile"
-                 data-hi-placeholder="10 अंकों का नंबर"
-                 data-en-placeholder="10-digit number"
-                 placeholder="10 अंकों का नंबर" pattern="[0-9]{10}" required>
-        </div>
-        <div class="form-group">
-          <label for="village" data-hi="गाँव / मोहल्ला" data-en="Village / Area">गाँव / मोहल्ला</label>
-          <input type="text" id="village"
-                 data-hi-placeholder="जैसे: Samlipathar"
-                 data-en-placeholder="e.g. Samlipathar"
-                 placeholder="जैसे: Samlipathar">
-        </div>
-        <div class="form-group">
-          <label for="msg" data-hi="आप कैसे मदद कर सकते हैं?" data-en="How can you help?">आप कैसे मदद कर सकते हैं?</label>
-          <textarea id="msg" rows="3"
-                    data-hi-placeholder="जैसे: घर-घर प्रचार, सोशल मीडिया, बैठक व्यवस्था..."
-                    data-en-placeholder="e.g. Door-to-door campaign, social media, meeting arrangements..."
-                    placeholder="जैसे: घर-घर प्रचार, सोशल मीडिया, बैठक व्यवस्था..."></textarea>
+          <label data-hi="मोबाइल नंबर *" data-en="Mobile Number *">मोबाइल नंबर *</label>
+          <input type="tel" pattern="[0-9]{10}" required>
         </div>
         <button type="submit" class="btn"
-                data-hi="वालंटियर के रूप में जुड़ें"
-                data-en="Join as Volunteer">वालंटियर के रूप में जुड़ें</button>
+                data-hi="जुड़ें"
+                data-en="Join">जुड़ें</button>
       </form>
     </section>
 
-    <!-- ============ CONTACT ============ -->
+    <!-- Contact -->
     <section id="contact">
       <h2 data-hi="संपर्क करें" data-en="Contact Us">संपर्क करें</h2>
       <div class="contact-row">
@@ -760,73 +801,98 @@
           <a href="tel:+910000000000" style="color:#1a6b4a;">+91 00000 00000</a>
         </div>
       </div>
-      <div class="contact-row">
-        <div class="icon">💬</div>
-        <div>
-          <strong data-hi="WhatsApp:" data-en="WhatsApp:">WhatsApp:</strong>
-          <span data-hi="नीचे बटन दबाएँ" data-en="Tap the button below">नीचे बटन दबाएँ</span>
-        </div>
-      </div>
-      <a href="https://wa.me/910000000000?text=नमस्ते%2C%20मैं%20Samlipathar%20चुनाव%20में%20आपके%20साथ%20जुड़ना%20चाहता%20हूँ।"
-         class="btn btn-whatsapp" target="_blank" rel="noopener"
+      <a href="https://wa.me/910000000000" class="btn btn-whatsapp" target="_blank"
          data-hi="💬 WhatsApp पर बात करें"
          data-en="💬 Chat on WhatsApp">
         💬 WhatsApp पर बात करें
       </a>
-      <p style="margin-top:14px; font-size:0.9rem; color:#627d98;"
-         data-hi="(ऊपर दिए गए नंबर को अपने असली मोबाइल नंबर से बदलें।)"
-         data-en="(Replace the number above with your real mobile number.)">
-        (ऊपर दिए गए नंबर को अपने असली मोबाइल नंबर से बदलें।)
-      </p>
     </section>
 
-    <!-- ============ LEGAL ============ -->
+    <!-- Legal -->
     <section id="legal" style="background:#fff8e6; border:1px solid #f5b301;">
       <h2 style="border-left-color:#d97706;"
           data-hi="⚠️ कानूनी सूचना"
           data-en="⚠️ Legal Notice">⚠️ कानूनी सूचना</h2>
       <p style="font-size:0.95rem;"
-         data-hi="यह वेबसाइट चुनाव प्रचार के उद्देश्य से बनाई गई है। भारत निर्वाचन आयोग के नियमों के अनुसार, वेबसाइट निर्माण और डिजिटल प्रचार का खर्च चुनाव व्यय (Election Expenses) में शामिल किया जाना चाहिए। कृपया सुनिश्चित करें कि इस वेबसाइट पर आदर्श आचार संहिता (Model Code of Conduct) का उल्लंघन करने वाली कोई सामग्री न हो।"
-         data-en="This website has been created for election campaigning. As per the rules of the Election Commission of India, the cost of website creation and digital campaigning should be included in Election Expenses. Please ensure that this website does not contain any content that violates the Model Code of Conduct.">
-        यह वेबसाइट चुनाव प्रचार के उद्देश्य से बनाई गई है। भारत निर्वाचन आयोग के नियमों के अनुसार,
-        वेबसाइट निर्माण और डिजिटल प्रचार का खर्च <strong>चुनाव व्यय (Election Expenses)</strong> में शामिल किया जाना चाहिए।
-        कृपया सुनिश्चित करें कि इस वेबसाइट पर आदर्श आचार संहिता (Model Code of Conduct) का उल्लंघन करने वाली कोई सामग्री न हो।
+         data-hi="मतदाताओं की निजी जानकारी (मोबाइल नंबर आदि) केवल Admin द्वारा देखी जा सकती है और सार्वजनिक नहीं की जाती। यह DPDP Act 2023 के अनुरूप है।"
+         data-en="Voter personal information (mobile numbers etc.) can only be viewed by Admin and is not made public. This complies with the DPDP Act 2023.">
+        मतदाताओं की निजी जानकारी (मोबाइल नंबर आदि) केवल Admin द्वारा देखी जा सकती है और सार्वजनिक नहीं की जाती। यह DPDP Act 2023 के अनुरूप है।
       </p>
     </section>
 
   </div>
 
-  <!-- ============ FOOTER ============ -->
   <footer>
     <div class="container">
       <p data-hi="© 2026 [आपका नाम] — Samlipathar Gram Panchayat Chunav"
          data-en="© 2026 [Your Name] — Samlipathar Gram Panchayat Election">
         © 2026 [आपका नाम] — Samlipathar Gram Panchayat Chunav
       </p>
-      <p style="margin-top:6px;"
-         data-hi="आपका साथ, गाँव का विकास 🙏"
-         data-en="Your Support, Village Development 🙏">
-        आपका साथ, गाँव का विकास 🙏
-      </p>
     </div>
   </footer>
 
-  <!-- ============ SCRIPTS ============ -->
   <script>
-    /* ========== 1. Google Sheet Configuration ========== */
-    // 👇 इन दो लाइनों को अपने Google Sheet की ID और GID से बदलें
-    const SHEET_ID = 'PASTE_YOUR_GOOGLE_SHEET_ID_HERE';
-    const SHEET_GID = 'PASTE_YOUR_GID_HERE'; // आमतौर पर '0'
+    /* =========================================================
+       1. ADMIN PASSWORD — इसे बदलें!
+       ========================================================= */
+    const ADMIN_PASSWORD = 'samlipathar2026'; // 👈 यहाँ अपना पासवर्ड लिखें
 
-    // Google Visualization API से CSV डेटा लाना (CORS के लिए सुरक्षित)
+    /* =========================================================
+       2. GOOGLE SHEET CONFIG
+       ========================================================= */
+    const SHEET_ID = 'PASTE_YOUR_GOOGLE_SHEET_ID_HERE';
+    const SHEET_GID = 'PASTE_YOUR_GID_HERE';
     const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${SHEET_GID}`;
 
-    let voterData = [];        // सारा डेटा
-    let currentLang = 'hi';    // भाषा ट्रैकिंग
+    let voterData = [];
+    let currentLang = 'hi';
+    let isLoggedIn = false;
 
-    /* ========== 2. Fetch Voter Data ========== */
+    /* =========================================================
+       3. LOGIN / LOGOUT
+       ========================================================= */
+    function checkLogin() {
+      const input = document.getElementById('adminPassword');
+      const errorEl = document.getElementById('loginError');
+      const entered = input.value.trim();
+
+      if (entered === ADMIN_PASSWORD) {
+        isLoggedIn = true;
+        document.getElementById('publicNotice').style.display = 'none';
+        document.getElementById('adminPanel').classList.add('visible');
+        errorEl.textContent = '';
+
+        // अगर डेटा पहले से लोड नहीं हुआ, तो लोड करें
+        if (voterData.length === 0) {
+          loadVoterList();
+        } else {
+          renderVoterList();
+        }
+      } else {
+        errorEl.textContent = currentLang === 'hi'
+          ? '❌ गलत पासवर्ड। कृपया दोबारा कोशिश करें।'
+          : '❌ Wrong password. Please try again.';
+        input.value = '';
+      }
+    }
+
+    function logout() {
+      isLoggedIn = false;
+      document.getElementById('adminPassword').value = '';
+      document.getElementById('publicNotice').style.display = 'block';
+      document.getElementById('adminPanel').classList.remove('visible');
+      document.getElementById('loginError').textContent = '';
+    }
+
+    /* =========================================================
+       4. FETCH VOTER DATA
+       ========================================================= */
     function loadVoterList() {
       const statusEl = document.getElementById('voterStatus');
+      statusEl.style.display = 'block';
+      statusEl.innerHTML = currentLang === 'hi'
+        ? 'मतदाता सूची लोड हो रही है...'
+        : 'Loading voter list...';
 
       fetch(SHEET_URL)
         .then(res => {
@@ -845,63 +911,51 @@
           renderVoterList();
         })
         .catch(err => {
-          console.error('Voter list load failed:', err);
+          console.error(err);
           statusEl.innerHTML = currentLang === 'hi'
-            ? '⚠️ डेटा लोड नहीं हो सका। कृपया जाँचें कि Google Sheet "Anyone with link" पर साझा है।'
-            : '⚠️ Could not load data. Please check that the Google Sheet is shared as "Anyone with link".';
+            ? '⚠️ डेटा लोड नहीं हो सका। Google Sheet की शेयरिंग जाँचें।'
+            : '⚠️ Could not load data. Check Google Sheet sharing.';
         });
     }
 
-    /* ========== 3. Parse CSV ========== */
     function parseCSV(text) {
       const rows = [];
-      let row = [];
-      let field = '';
-      let inQuotes = false;
+      let row = [], field = '', inQuotes = false;
 
       for (let i = 0; i < text.length; i++) {
         const c = text[i];
-
         if (inQuotes) {
           if (c === '"') {
             if (text[i + 1] === '"') { field += '"'; i++; }
-            else { inQuotes = false; }
-          } else { field += c; }
+            else inQuotes = false;
+          } else field += c;
         } else {
-          if (c === '"') { inQuotes = true; }
+          if (c === '"') inQuotes = true;
           else if (c === ',') { row.push(field); field = ''; }
           else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
-          else if (c === '\r') { /* skip */ }
-          else { field += c; }
+          else if (c !== '\r') field += c;
         }
       }
       if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
-
       if (rows.length < 2) return [];
 
       const headers = rows[0].map(h => h.trim().toLowerCase());
       const data = [];
-
       for (let i = 1; i < rows.length; i++) {
         const r = rows[i];
-        if (!r || r.length === 0 || r.every(c => !c.trim())) continue;
-
+        if (!r || r.every(c => !c.trim())) continue;
         const obj = {};
-        headers.forEach((h, idx) => {
-          obj[h] = (r[idx] || '').trim();
-        });
+        headers.forEach((h, idx) => obj[h] = (r[idx] || '').trim());
         data.push(obj);
       }
       return data;
     }
 
-    /* ========== 4. Populate Ward Filter ========== */
     function populateWardFilter() {
       const select = document.getElementById('wardFilter');
       const currentVal = select.value;
       const wards = [...new Set(voterData.map(v => v.ward).filter(Boolean))];
 
-      // Reset (keep first option)
       select.innerHTML = '';
       const first = document.createElement('option');
       first.value = '';
@@ -914,11 +968,12 @@
         opt.textContent = w;
         select.appendChild(opt);
       });
-
       if (wards.includes(currentVal)) select.value = currentVal;
     }
 
-    /* ========== 5. Render Voter Table ========== */
+    /* =========================================================
+       5. RENDER VOTER LIST WITH CALL BUTTON
+       ========================================================= */
     function renderVoterList() {
       const statusEl = document.getElementById('voterStatus');
       const tableWrap = document.getElementById('voterTableWrap');
@@ -932,7 +987,8 @@
       if (search) {
         filtered = filtered.filter(v =>
           (v['voter name'] || '').toLowerCase().includes(search) ||
-          (v['father/husband name'] || '').toLowerCase().includes(search)
+          (v['father/husband name'] || '').toLowerCase().includes(search) ||
+          (v.mobile || '').includes(search)
         );
       }
 
@@ -949,6 +1005,19 @@
 
       filtered.forEach(v => {
         const tr = document.createElement('tr');
+
+        // मोबाइल नंबर साफ़ करें (सिर्फ अंक)
+        const cleanMobile = (v.mobile || '').replace(/\D/g, '');
+
+        // Call बटन
+        let callBtn = '';
+        if (cleanMobile.length >= 10) {
+          const callNumber = cleanMobile.length === 10 ? '+91' + cleanMobile : cleanMobile;
+          callBtn = `<a href="tel:${callNumber}" class="btn-call">📞 Call</a>`;
+        } else {
+          callBtn = `<span class="btn-call no-number">—</span>`;
+        }
+
         tr.innerHTML = `
           <td><span class="ward-badge">${escapeHtml(v.ward || '-')}</span></td>
           <td>${escapeHtml(v['voter name'] || '-')}</td>
@@ -956,6 +1025,7 @@
           <td>${escapeHtml(v.age || '-')}</td>
           <td>${escapeHtml(v.gender || '-')}</td>
           <td>${escapeHtml(v.mobile || '-')}</td>
+          <td>${callBtn}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -967,7 +1037,6 @@
         : `Found ${filtered.length} voters.`;
     }
 
-    /* ========== 6. Escape HTML ========== */
     function escapeHtml(str) {
       return String(str)
         .replace(/&/g, '&amp;')
@@ -976,7 +1045,9 @@
         .replace(/"/g, '&quot;');
     }
 
-    /* ========== 7. Language Switcher ========== */
+    /* =========================================================
+       6. LANGUAGE
+       ========================================================= */
     function setLang(lang) {
       currentLang = lang;
       document.documentElement.lang = lang;
@@ -994,24 +1065,24 @@
         if (ph) el.setAttribute('placeholder', ph);
       });
 
-      // Update ward filter first option
-      populateWardFilter();
-
-      // Re-render voter list so status text updates
-      if (voterData.length > 0) renderVoterList();
+      if (voterData.length > 0) {
+        populateWardFilter();
+        renderVoterList();
+      }
 
       try { localStorage.setItem('samlipathar-lang', lang); } catch (e) {}
     }
 
-    /* ========== 8. Page Init ========== */
+    /* =========================================================
+       7. INIT
+       ========================================================= */
     (function init() {
-      // Load saved language
       let saved = null;
       try { saved = localStorage.getItem('samlipathar-lang'); } catch (e) {}
       setLang(saved === 'en' ? 'en' : 'hi');
 
-      // Load voter list from Google Sheet
-      loadVoterList();
+      // ⚠️ डेटा शुरू में नहीं लोड करेंगे — सिर्फ लॉगिन के बाद
+      // ताकि कोई भी URL से डेटा न देख सके
     })();
   </script>
 
