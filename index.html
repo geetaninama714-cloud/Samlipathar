@@ -1,330 +1,1019 @@
-<?php
-session_start();
-
-// ---------- डेटाबेस कनेक्शन ----------
-$conn = new mysqli("localhost", "root", "", "gram_panchayat_db");
-if ($conn->connect_error) die("DB Error: " . $conn->connect_error);
-
-// ---------- लॉगिन क्रेडेंशियल ----------
-define('ADMIN_USER', 'admin');
-define('ADMIN_PASS', 'admin123');
-
-// ---------- लॉगआउट ----------
-if (isset($_GET['logout'])) { session_destroy(); header("Location: " . $_SERVER['PHP_SELF']); exit; }
-
-// ---------- लॉगिन हैंडलर ----------
-if (isset($_POST['login'])) {
-    if ($_POST['username'] === ADMIN_USER && $_POST['password'] === ADMIN_PASS) {
-        $_SESSION['admin'] = true;
-    } else {
-        $login_error = "❌ गलत यूज़रनेम या पासवर्ड!";
-    }
-}
-
-// ---------- अगर लॉगिन नहीं है तो लॉगिन पेज दिखाएँ ----------
-if (!isset($_SESSION['admin'])) {
-    ?>
-    <!DOCTYPE html><html lang="hi"><head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>लॉगिन - ग्राम पंचायत सामलीपठार</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>body{background:linear-gradient(135deg,#138808,#FF9933);height:100vh;display:flex;align-items:center;}</style>
-    </head><body><div class="container"><div class="row justify-content-center"><div class="col-md-5">
-        <div class="card shadow-lg"><div class="card-header bg-dark text-white text-center">
-            <h3>🗳️ ग्राम पंचायत सामलीपठार</h3><p class="mb-0">चुनाव प्रसार - एडमिन लॉगिन</p>
-        </div><div class="card-body">
-            <?php if(isset($login_error)) echo "<div class='alert alert-danger'>$login_error</div>"; ?>
-            <form method="POST">
-                <div class="mb-3"><label class="form-label">यूज़रनेम</label>
-                    <input type="text" name="username" class="form-control" value="admin" required></div>
-                <div class="mb-3"><label class="form-label">पासवर्ड</label>
-                    <input type="password" name="password" class="form-control" value="admin123" required></div>
-                <button type="submit" name="login" class="btn btn-success w-100">🔐 लॉगिन करें</button>
-            </form>
-            <p class="text-muted mt-3 mb-0 text-center"><small>Demo: admin / admin123</small></p>
-        </div></div>
-    </div></div></div></body></html>
-    <?php
-    exit;
-}
-
-// ---------- CRUD ऑपरेशंस ----------
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['admin'])) {
-
-    if (isset($_POST['add_candidate'])) {
-        $s = $conn->prepare("INSERT INTO candidates (name,party_name,symbol,description,village) VALUES (?,?,?,?,?)");
-        $s->bind_param("sssss", $_POST['name'],$_POST['party_name'],$_POST['symbol'],$_POST['description'],$_POST['village']);
-        $s->execute(); $s->close();
-    }
-    elseif (isset($_POST['edit_candidate'])) {
-        $s = $conn->prepare("UPDATE candidates SET name=?,party_name=?,symbol=?,description=?,village=? WHERE id=?");
-        $s->bind_param("sssssi", $_POST['name'],$_POST['party_name'],$_POST['symbol'],$_POST['description'],$_POST['village'],$_POST['edit_id']);
-        $s->execute(); $s->close();
-    }
-    elseif (isset($_POST['delete_candidate'])) {
-        $s = $conn->prepare("DELETE FROM candidates WHERE id=?");
-        $s->bind_param("i", $_POST['delete_id']); $s->execute(); $s->close();
-    }
-    elseif (isset($_POST['add_voter'])) {
-        $s = $conn->prepare("INSERT INTO voters (name,voter_id,village,booth) VALUES (?,?,?,?)");
-        $s->bind_param("ssss", $_POST['voter_name'],$_POST['voter_id'],$_POST['village'],$_POST['booth']);
-        $s->execute(); $s->close();
-    }
-    elseif (isset($_POST['edit_voter'])) {
-        $s = $conn->prepare("UPDATE voters SET name=?,voter_id=?,village=?,booth=? WHERE id=?");
-        $s->bind_param("ssssi", $_POST['voter_name'],$_POST['voter_id'],$_POST['village'],$_POST['booth'],$_POST['edit_voter_id']);
-        $s->execute(); $s->close();
-    }
-    elseif (isset($_POST['delete_voter'])) {
-        $s = $conn->prepare("DELETE FROM voters WHERE id=?");
-        $s->bind_param("i", $_POST['delete_voter_id']); $s->execute(); $s->close();
-    }
-    elseif (isset($_POST['add_material'])) {
-        $s = $conn->prepare("INSERT INTO campaign_materials (title,description,category) VALUES (?,?,?)");
-        $s->bind_param("sss", $_POST['title'],$_POST['material_desc'],$_POST['category']);
-        $s->execute(); $s->close();
-    }
-    elseif (isset($_POST['edit_material'])) {
-        $s = $conn->prepare("UPDATE campaign_materials SET title=?,description=?,category=? WHERE id=?");
-        $s->bind_param("sssi", $_POST['title'],$_POST['material_desc'],$_POST['category'],$_POST['edit_material_id']);
-        $s->execute(); $s->close();
-    }
-    elseif (isset($_POST['delete_material'])) {
-        $s = $conn->prepare("DELETE FROM campaign_materials WHERE id=?");
-        $s->bind_param("i", $_POST['delete_material_id']); $s->execute(); $s->close();
-    }
-
-    header("Location: " . $_SERVER['PHP_SELF']); exit;
-}
-
-// ---------- काउंट्स ----------
-$total_candidates = $conn->query("SELECT COUNT(*) c FROM candidates")->fetch_assoc()['c'];
-$total_voters = $conn->query("SELECT COUNT(*) c FROM voters")->fetch_assoc()['c'];
-$total_materials = $conn->query("SELECT COUNT(*) c FROM campaign_materials")->fetch_assoc()['c'];
-?>
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ग्राम पंचायत सामलीपठार - एडमिन डैशबोर्ड</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-body { background: #f4f6f9; }
-.stat-card { border-left: 5px solid; transition: transform 0.2s; }
-.stat-card:hover { transform: translateY(-5px); }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samlipathar Gram Panchayat Chunav 2026</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Noto Sans Devanagari', Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      color: #1e2a3a;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* ---------- Language Switch ---------- */
+    .lang-bar {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 999;
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 5px;
+      border-radius: 50px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .lang-bar button {
+      border: none;
+      background: transparent;
+      padding: 7px 16px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: #0b3d2e;
+      transition: all 0.2s;
+    }
+
+    .lang-bar button.active {
+      background: #1a6b4a;
+      color: white;
+    }
+
+    /* ---------- Navigation Menu ---------- */
+    nav {
+      background: #0b3d2e;
+      position: sticky;
+      top: 0;
+      z-index: 998;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 6px;
+    }
+
+    nav ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    nav ul li a:hover {
+      background: #1a6b4a;
+    }
+
+    /* ---------- Header / Hero ---------- */
+    header {
+      background: linear-gradient(135deg, #0b3d2e, #1a6b4a);
+      color: white;
+      padding: 50px 0 30px;
+      text-align: center;
+      border-bottom: 6px solid #f5b301;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    header p {
+      font-size: 1.15rem;
+      opacity: 0.95;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .slogan {
+      display: inline-block;
+      background: #f5b301;
+      color: #0b3d2e;
+      font-weight: 700;
+      padding: 6px 22px;
+      border-radius: 40px;
+      margin-top: 18px;
+      font-size: 1.1rem;
+    }
+
+    /* ---------- Section ---------- */
+    section {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin: 24px 0;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    section h2 {
+      font-size: 1.6rem;
+      color: #0b3d2e;
+      border-left: 6px solid #f5b301;
+      padding-left: 14px;
+      margin-bottom: 18px;
+    }
+
+    /* ---------- Home Page Quick Cards ---------- */
+    .home-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .home-card {
+      background: #eef7f2;
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+      border-bottom: 4px solid #1a6b4a;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: #1e2a3a;
+      display: block;
+    }
+
+    .home-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .home-card .emoji {
+      font-size: 2.2rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .home-card .label {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #0b3d2e;
+    }
+
+    /* ---------- Candidate ---------- */
+    .candidate-box {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .candidate-photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: #d9e2ec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: #0b3d2e;
+      flex-shrink: 0;
+      border: 4px solid #f5b301;
+      overflow: hidden;
+    }
+
+    .candidate-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .candidate-info h3 {
+      font-size: 1.5rem;
+      color: #0b3d2e;
+    }
+
+    .candidate-info .role {
+      color: #f5b301;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .candidate-info p {
+      font-size: 1rem;
+      color: #334e68;
+    }
+
+    /* ---------- Vision ---------- */
+    .vision-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .vision-list li {
+      background: #eef7f2;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      border-left: 5px solid #1a6b4a;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .vision-list li .num {
+      background: #1a6b4a;
+      color: white;
+      font-weight: 700;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ---------- Voter List ---------- */
+    .voter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .voter-controls select,
+    .voter-controls input {
+      padding: 10px 14px;
+      border: 2px solid #cbd6e2;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: #f9fbfd;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .voter-controls select:focus,
+    .voter-controls input:focus {
+      border-color: #1a6b4a;
+      outline: none;
+    }
+
+    .voter-status {
+      text-align: center;
+      padding: 16px;
+      color: #627d98;
+      font-size: 0.95rem;
+    }
+
+    .voter-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid #d9e2ec;
+    }
+
+    table.voter-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      min-width: 600px;
+    }
+
+    table.voter-table thead {
+      background: #1a6b4a;
+      color: white;
+    }
+
+    table.voter-table th {
+      padding: 12px 14px;
+      text-align: left;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    table.voter-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid #eef2f6;
+      color: #1e2a3a;
+    }
+
+    table.voter-table tbody tr:nth-child(even) {
+      background: #f9fbfd;
+    }
+
+    table.voter-table tbody tr:hover {
+      background: #eef7f2;
+    }
+
+    .ward-badge {
+      display: inline-block;
+      background: #f5b301;
+      color: #0b3d2e;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    /* ---------- Gallery ---------- */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-item {
+      background: #d9e2ec;
+      border-radius: 12px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #486581;
+      font-size: 0.95rem;
+      text-align: center;
+      padding: 10px;
+      overflow: hidden;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ---------- Volunteer Form ---------- */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #1e2a3a;
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #cbd6e2;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+      background: #f9fbfd;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #1a6b4a;
+      outline: none;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #1a6b4a;
+      color: white;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 50px;
+      border: none;
+      font-size: 1.05rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background: #0b3d2e;
+      transform: translateY(-1px);
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .btn-whatsapp:hover {
+      background: #1da851;
+    }
+
+    /* ---------- Contact ---------- */
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 1.05rem;
+    }
+
+    .contact-row .icon {
+      background: #eef7f2;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      text-align: center;
+      padding: 28px 16px;
+      color: #627d98;
+      font-size: 0.9rem;
+      border-top: 1px solid #d9e2ec;
+      margin-top: 20px;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 520px) {
+      header {
+        padding: 50px 0 24px;
+      }
+
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      header p {
+        font-size: 1rem;
+      }
+
+      .candidate-box {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .candidate-info h3 {
+        font-size: 1.3rem;
+      }
+
+      section {
+        padding: 20px 16px;
+      }
+
+      section h2 {
+        font-size: 1.25rem;
+      }
+
+      .vision-list li {
+        font-size: 0.95rem;
+        padding: 12px 14px;
+      }
+
+      .lang-bar {
+        top: 8px;
+        right: 8px;
+      }
+
+      .lang-bar button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+
+      nav ul li a {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+      }
+
+      .home-card .label {
+        font-size: 0.95rem;
+      }
+
+      .voter-controls {
+        flex-direction: column;
+      }
+
+      .voter-controls select,
+      .voter-controls input {
+        min-width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- नेवबार -->
-<nav class="navbar navbar-dark bg-success shadow">
-  <div class="container-fluid">
-    <span class="navbar-brand mb-0 h1">🗳️ ग्राम पंचायत सामलीपठार - चुनाव प्रसार</span>
-    <div>
-      <span class="text-white me-3">👤 admin</span>
-      <a href="?logout=1" class="btn btn-outline-light btn-sm">लॉगआउट</a>
-    </div>
-  </div>
-</nav>
-
-<div class="container my-4">
-
-  <!-- डैशबोर्ड कार्ड्स -->
-  <div class="row mb-4">
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-primary shadow-sm">
-        <div class="card-body">
-          <h6 class="text-muted">कुल उम्मीदवार</h6>
-          <h2 class="text-primary"><?= $total_candidates ?></h2>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-success shadow-sm">
-        <div class="card-body">
-          <h6 class="text-muted">कुल मतदाता</h6>
-          <h2 class="text-success"><?= $total_voters ?></h2>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-warning shadow-sm">
-        <div class="card-body">
-          <h6 class="text-muted">प्रचार सामग्री</h6>
-          <h2 class="text-warning"><?= $total_materials ?></h2>
-        </div>
-      </div>
-    </div>
+  <!-- Language Switch -->
+  <div class="lang-bar">
+    <button id="btn-hi" class="active" onclick="setLang('hi')">हिंदी</button>
+    <button id="btn-en" onclick="setLang('en')">English</button>
   </div>
 
-  <!-- टैब्स -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#candidates">👥 उम्मीदवार</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#voters">🧑‍🤝‍🧑 मतदाता</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#materials">📢 प्रचार सामग्री</a></li>
-  </ul>
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="#home" data-hi="होम" data-en="Home">होम</a></li>
+      <li><a href="#about" data-hi="परिचय" data-en="About">परिचय</a></li>
+      <li><a href="#vision" data-hi="विजन" data-en="Vision">विजन</a></li>
+      <li><a href="#voterlist" data-hi="मतदाता सूची" data-en="Voter List">मतदाता सूची</a></li>
+      <li><a href="#gallery" data-hi="गैलरी" data-en="Gallery">गैलरी</a></li>
+      <li><a href="#volunteer" data-hi="वालंटियर" data-en="Volunteer">वालंटियर</a></li>
+      <li><a href="#contact" data-hi="संपर्क" data-en="Contact">संपर्क</a></li>
+    </ul>
+  </nav>
 
-  <div class="tab-content mt-3">
-
-    <!-- ================= CANDIDATES ================= -->
-    <div class="tab-pane fade show active" id="candidates">
-      <div class="card shadow-sm"><div class="card-body">
-        <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead class="table-dark">
-            <tr><th>नाम</th><th>पार्टी</th><th>चिन्ह</th><th>विवरण</th><th>गाँव</th><th width="200">एक्शन</th></tr>
-          </thead>
-          <tbody>
-          <?php $r = $conn->query("SELECT * FROM candidates ORDER BY id DESC");
-          while($row = $r->fetch_assoc()): ?>
-            <tr>
-              <td><strong><?= htmlspecialchars($row['name']) ?></strong></td>
-              <td><?= htmlspecialchars($row['party_name']) ?></td>
-              <td><?= htmlspecialchars($row['symbol']) ?></td>
-              <td><?= htmlspecialchars($row['description']) ?></td>
-              <td><?= htmlspecialchars($row['village']) ?></td>
-              <td>
-                <button class="btn btn-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#ec<?= $row['id'] ?>">✏️ एडिट</button>
-                <form method="POST" style="display:inline;">
-                  <input type="hidden" name="delete_id" value="<?= $row['id'] ?>">
-                  <button type="submit" name="delete_candidate" class="btn btn-danger btn-sm" onclick="return confirm('हटाना है?')">🗑️</button>
-                </form>
-              </td>
-            </tr>
-            <tr class="collapse" id="ec<?= $row['id'] ?>"><td colspan="6">
-              <form method="POST" class="row g-2 p-2 bg-light">
-                <input type="hidden" name="edit_id" value="<?= $row['id'] ?>">
-                <div class="col-md-2"><input type="text" name="name" value="<?= $row['name'] ?>" class="form-control form-control-sm" required></div>
-                <div class="col-md-2"><input type="text" name="party_name" value="<?= $row['party_name'] ?>" class="form-control form-control-sm"></div>
-                <div class="col-md-2"><input type="text" name="symbol" value="<?= $row['symbol'] ?>" class="form-control form-control-sm"></div>
-                <div class="col-md-3"><input type="text" name="description" value="<?= $row['description'] ?>" class="form-control form-control-sm"></div>
-                <div class="col-md-2"><input type="text" name="village" value="<?= $row['village'] ?>" class="form-control form-control-sm"></div>
-                <div class="col-md-1"><button type="submit" name="edit_candidate" class="btn btn-success btn-sm w-100">सेव</button></div>
-              </form>
-            </td></tr>
-          <?php endwhile; ?>
-          </tbody>
-          <tfoot><tr class="table-light"><td colspan="6">
-            <form method="POST" class="row g-2">
-              <div class="col-md-2"><input type="text" name="name" placeholder="नाम*" class="form-control form-control-sm" required></div>
-              <div class="col-md-2"><input type="text" name="party_name" placeholder="पार्टी" class="form-control form-control-sm"></div>
-              <div class="col-md-2"><input type="text" name="symbol" placeholder="चिन्ह" class="form-control form-control-sm"></div>
-              <div class="col-md-3"><input type="text" name="description" placeholder="विवरण" class="form-control form-control-sm"></div>
-              <div class="col-md-2"><input type="text" name="village" value="सामलीपठार" class="form-control form-control-sm"></div>
-              <div class="col-md-1"><button type="submit" name="add_candidate" class="btn btn-primary btn-sm w-100">➕</button></div>
-            </form>
-          </td></tr></tfoot>
-        </table>
-        </div>
-      </div></div>
+  <!-- Header / Hero (also Home top) -->
+  <header id="home">
+    <div class="container">
+      <h1 data-hi="Samlipathar Gram Panchayat" data-en="Samlipathar Gram Panchayat">Samlipathar Gram Panchayat</h1>
+      <p data-hi="सही नेतृत्व, सुनहरा विकास" data-en="Right Leadership, Golden Development">सही नेतृत्व, सुनहरा विकास</p>
+      <div class="slogan" data-hi="आपका अपना उम्मीदवार" data-en="Your Own Candidate">आपका अपना उम्मीदवार</div>
     </div>
+  </header>
 
-    <!-- ================= VOTERS ================= -->
-    <div class="tab-pane fade" id="voters">
-      <div class="card shadow-sm"><div class="card-body">
-        <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead class="table-dark">
-            <tr><th>नाम</th><th>Voter ID</th><th>गाँव</th><th>बूथ</th><th width="200">एक्शन</th></tr>
-          </thead>
-          <tbody>
-          <?php $r = $conn->query("SELECT * FROM voters ORDER BY id DESC");
-          while($row = $r->fetch_assoc()): ?>
-            <tr>
-              <td><strong><?= htmlspecialchars($row['name']) ?></strong></td>
-              <td><?= htmlspecialchars($row['voter_id']) ?></td>
-              <td><?= htmlspecialchars($row['village']) ?></td>
-              <td><?= htmlspecialchars($row['booth']) ?></td>
-              <td>
-                <button class="btn btn-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#ev<?= $row['id'] ?>">✏️ एडिट</button>
-                <form method="POST" style="display:inline;">
-                  <input type="hidden" name="delete_voter_id" value="<?= $row['id'] ?>">
-                  <button type="submit" name="delete_voter" class="btn btn-danger btn-sm" onclick="return confirm('हटाना है?')">🗑️</button>
-                </form>
-              </td>
-            </tr>
-            <tr class="collapse" id="ev<?= $row['id'] ?>"><td colspan="5">
-              <form method="POST" class="row g-2 p-2 bg-light">
-                <input type="hidden" name="edit_voter_id" value="<?= $row['id'] ?>">
-                <div class="col-md-3"><input type="text" name="voter_name" value="<?= $row['name'] ?>" class="form-control form-control-sm" required></div>
-                <div class="col-md-3"><input type="text" name="voter_id" value="<?= $row['voter_id'] ?>" class="form-control form-control-sm" required></div>
-                <div class="col-md-2"><input type="text" name="village" value="<?= $row['village'] ?>" class="form-control form-control-sm"></div>
-                <div class="col-md-2"><input type="text" name="booth" value="<?= $row['booth'] ?>" class="form-control form-control-sm"></div>
-                <div class="col-md-2"><button type="submit" name="edit_voter" class="btn btn-success btn-sm w-100">सेव</button></div>
-              </form>
-            </td></tr>
-          <?php endwhile; ?>
-          </tbody>
-          <tfoot><tr class="table-light"><td colspan="5">
-            <form method="POST" class="row g-2">
-              <div class="col-md-3"><input type="text" name="voter_name" placeholder="नाम*" class="form-control form-control-sm" required></div>
-              <div class="col-md-3"><input type="text" name="voter_id" placeholder="Voter ID*" class="form-control form-control-sm" required></div>
-              <div class="col-md-2"><input type="text" name="village" value="सामलीपठार" class="form-control form-control-sm"></div>
-              <div class="col-md-2"><input type="text" name="booth" placeholder="बूथ" class="form-control form-control-sm"></div>
-              <div class="col-md-2"><button type="submit" name="add_voter" class="btn btn-primary btn-sm w-100">➕ जोड़ें</button></div>
-            </form>
-          </td></tr></tfoot>
-        </table>
-        </div>
-      </div></div>
-    </div>
+  <div class="container">
 
-    <!-- ================= MATERIALS ================= -->
-    <div class="tab-pane fade" id="materials">
-      <div class="card shadow-sm"><div class="card-body">
-        <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead class="table-dark">
-            <tr><th>शीर्षक</th><th>विवरण</th><th>श्रेणी</th><th width="200">एक्शन</th></tr>
-          </thead>
-          <tbody>
-          <?php $r = $conn->query("SELECT * FROM campaign_materials ORDER BY id DESC");
-          while($row = $r->fetch_assoc()): ?>
-            <tr>
-              <td><strong><?= htmlspecialchars($row['title']) ?></strong></td>
-              <td><?= htmlspecialchars($row['description']) ?></td>
-              <td><span class="badge bg-info text-dark"><?= htmlspecialchars($row['category']) ?></span></td>
-              <td>
-                <button class="btn btn-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#em<?= $row['id'] ?>">✏️ एडिट</button>
-                <form method="POST" style="display:inline;">
-                  <input type="hidden" name="delete_material_id" value="<?= $row['id'] ?>">
-                  <button type="submit" name="delete_material" class="btn btn-danger btn-sm" onclick="return confirm('हटाना है?')">🗑️</button>
-                </form>
-              </td>
-            </tr>
-            <tr class="collapse" id="em<?= $row['id'] ?>"><td colspan="4">
-              <form method="POST" class="row g-2 p-2 bg-light">
-                <input type="hidden" name="edit_material_id" value="<?= $row['id'] ?>">
-                <div class="col-md-3"><input type="text" name="title" value="<?= $row['title'] ?>" class="form-control form-control-sm" required></div>
-                <div class="col-md-5"><input type="text" name="material_desc" value="<?= $row['description'] ?>" class="form-control form-control-sm"></div>
-                <div class="col-md-2"><input type="text" name="category" value="<?= $row['category'] ?>" class="form-control form-control-sm"></div>
-                <div class="col-md-2"><button type="submit" name="edit_material" class="btn btn-success btn-sm w-100">सेव</button></div>
-              </form>
-            </td></tr>
-          <?php endwhile; ?>
-          </tbody>
-          <tfoot><tr class="table-light"><td colspan="4">
-            <form method="POST" class="row g-2">
-              <div class="col-md-3"><input type="text" name="title" placeholder="शीर्षक*" class="form-control form-control-sm" required></div>
-              <div class="col-md-5"><input type="text" name="material_desc" placeholder="विवरण" class="form-control form-control-sm"></div>
-              <div class="col-md-2"><input type="text" name="category" placeholder="श्रेणी" class="form-control form-control-sm"></div>
-              <div class="col-md-2"><button type="submit" name="add_material" class="btn btn-primary btn-sm w-100">➕ जोड़ें</button></div>
-            </form>
-          </td></tr></tfoot>
-        </table>
+    <!-- ============ HOME PAGE ============ -->
+    <section id="homepage">
+      <h2 data-hi="🏠 होम पेज — एक नज़र में" data-en="🏠 Home Page — At a Glance">🏠 होम पेज — एक नज़र में</h2>
+      <p style="margin-bottom:18px;"
+         data-hi="Samlipathar Gram Panchayat चुनाव 2026 के लिए आपका स्वागत है। नीचे दिए गए कार्ड पर क्लिक करके जानकारी देखें।"
+         data-en="Welcome to the Samlipathar Gram Panchayat Election 2026. Click on any card below to view information.">
+        Samlipathar Gram Panchayat चुनाव 2026 के लिए आपका स्वागत है। नीचे दिए गए कार्ड पर क्लिक करके जानकारी देखें।
+      </p>
+
+      <div class="home-cards">
+        <a href="#about" class="home-card">
+          <span class="emoji">👤</span>
+          <span class="label" data-hi="मेरा परिचय" data-en="About Me">मेरा परिचय</span>
+        </a>
+        <a href="#vision" class="home-card">
+          <span class="emoji">🎯</span>
+          <span class="label" data-hi="10 संकल्प" data-en="10 Resolutions">10 संकल्प</span>
+        </a>
+        <a href="#voterlist" class="home-card">
+          <span class="emoji">📋</span>
+          <span class="label" data-hi="वार्ड-वार मतदाता सूची" data-en="Ward-wise Voter List">वार्ड-वार मतदाता सूची</span>
+        </a>
+        <a href="#gallery" class="home-card">
+          <span class="emoji">📸</span>
+          <span class="label" data-hi="गैलरी" data-en="Gallery">गैलरी</span>
+        </a>
+        <a href="#volunteer" class="home-card">
+          <span class="emoji">🤝</span>
+          <span class="label" data-hi="वालंटियर बनें" data-en="Become a Volunteer">वालंटियर बनें</span>
+        </a>
+        <a href="#contact" class="home-card">
+          <span class="emoji">📞</span>
+          <span class="label" data-hi="संपर्क करें" data-en="Contact Us">संपर्क करें</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about">
+      <h2 data-hi="मेरा परिचय" data-en="About Me">मेरा परिचय</h2>
+      <div class="candidate-box">
+        <div class="candidate-photo">
+          <!-- यहाँ अपनी फोटो लगाएँ: <img src="photo.jpg" alt="Candidate"> -->
+          👤
         </div>
-      </div></div>
-    </div>
+        <div class="candidate-info">
+          <h3 data-hi="[आपका नाम]" data-en="[Your Name]">[आपका नाम]</h3>
+          <div class="role"
+               data-hi="ग्राम पंचायत अध्यक्ष पद के उम्मीदवार — Samlipathar"
+               data-en="Candidate for Gram Panchayat President — Samlipathar">
+            ग्राम पंचायत अध्यक्ष पद के उम्मीदवार — Samlipathar
+          </div>
+          <p data-hi="मैं Samlipathar का मूल निवासी हूँ। पिछले कई वर्षों से गाँव के विकास और लोगों की सेवा में सक्रिय हूँ। मेरा उद्देश्य है — पानी, सड़क, शिक्षा और रोज़गार के मुद्दों को प्राथमिकता देना।"
+             data-en="I am a native of Samlipathar. For many years, I have been active in village development and public service. My goal is to prioritize water, roads, education, and employment.">
+            मैं Samlipathar का मूल निवासी हूँ। पिछले कई वर्षों से गाँव के विकास और लोगों की सेवा में सक्रिय हूँ।
+            मेरा उद्देश्य है — पानी, सड़क, शिक्षा और रोज़गार के मुद्दों को प्राथमिकता देना।
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VISION ============ -->
+    <section id="vision">
+      <h2 data-hi="मेरा विजन — 10 संकल्प" data-en="My Vision — 10 Resolutions">मेरा विजन — 10 संकल्प</h2>
+      <ul class="vision-list">
+        <li><span class="num">1</span> <span data-hi="हर घर तक साफ़ पीने का पानी पहुँचाना।" data-en="Provide clean drinking water to every household.">हर घर तक साफ़ पीने का पानी पहुँचाना।</span></li>
+        <li><span class="num">2</span> <span data-hi="गाँव की सड़कों और नालियों की मरम्मत।" data-en="Repair village roads and drainage systems.">गाँव की सड़कों और नालियों की मरम्मत।</span></li>
+        <li><span class="num">3</span> <span data-hi="सरकारी स्कूल में बेहतर शिक्षा और सुविधाएँ।" data-en="Better education and facilities in government schools.">सरकारी स्कूल में बेहतर शिक्षा और सुविधाएँ।</span></li>
+        <li><span class="num">4</span> <span data-hi="किसानों के लिए बीज, खाद और सिंचाई सहायता।" data-en="Support farmers with seeds, fertilizer, and irrigation.">किसानों के लिए बीज, खाद और सिंचाई सहायता।</span></li>
+        <li><span class="num">5</span> <span data-hi="महिलाओं और युवाओं के लिए रोज़गार योजनाएँ।" data-en="Employment schemes for women and youth.">महिलाओं और युवाओं के लिए रोज़गार योजनाएँ।</span></li>
+        <li><span class="num">6</span> <span data-hi="गाँव में स्ट्रीट लाइट और सुरक्षा व्यवस्था।" data-en="Street lights and better security in the village.">गाँव में स्ट्रीट लाइट और सुरक्षा व्यवस्था।</span></li>
+        <li><span class="num">7</span> <span data-hi="स्वास्थ्य शिविर और प्राथमिक उपचार केंद्र।" data-en="Health camps and primary treatment centers.">स्वास्थ्य शिविर और प्राथमिक उपचार केंद्र।</span></li>
+        <li><span class="num">8</span> <span data-hi="पंचायत की योजनाओं में पूरी पारदर्शिता।" data-en="Full transparency in Panchayat schemes.">पंचायत की योजनाओं में पूरी पारदर्शिता।</span></li>
+        <li><span class="num">9</span> <span data-hi="युवाओं के लिए खेल और कौशल विकास कार्यक्रम।" data-en="Sports and skill development programs for youth.">युवाओं के लिए खेल और कौशल विकास कार्यक्रम।</span></li>
+        <li><span class="num">10</span> <span data-hi="हर वर्ग, हर समुदाय को साथ लेकर चलना।" data-en="Take every section and community together.">हर वर्ग, हर समुदाय को साथ लेकर चलना।</span></li>
+      </ul>
+    </section>
+
+    <!-- ============ VOTER LIST (Google Sheet) ============ -->
+    <section id="voterlist">
+      <h2 data-hi="📋 वार्ड-वार मतदाता सूची" data-en="📋 Ward-wise Voter List">📋 वार्ड-वार मतदाता सूची</h2>
+      <p style="margin-bottom:16px;"
+         data-hi="नीचे वार्ड चुनें या नाम खोजें। पूरी सूची Google Sheet से जुड़ी है, इसलिए इसे अपडेट करना आसान है।"
+         data-en="Select a ward below or search by name. The full list is linked to a Google Sheet, making it easy to update.">
+        नीचे वार्ड चुनें या नाम खोजें। पूरी सूची Google Sheet से जुड़ी है, इसलिए इसे अपडेट करना आसान है।
+      </p>
+
+      <div class="voter-controls">
+        <select id="wardFilter" onchange="renderVoterList()">
+          <option value="" data-hi="-- सभी वार्ड --" data-en="-- All Wards --">-- सभी वार्ड --</option>
+        </select>
+        <input type="text" id="searchBox" 
+               data-hi-placeholder="नाम खोजें..." 
+               data-en-placeholder="Search by name..."
+               placeholder="नाम खोजें..." oninput="renderVoterList()">
+      </div>
+
+      <div class="voter-status" id="voterStatus"
+           data-hi="मतदाता सूची लोड हो रही है..." 
+           data-en="Loading voter list...">
+        मतदाता सूची लोड हो रही है...
+      </div>
+
+      <div class="voter-table-wrap" id="voterTableWrap" style="display:none;">
+        <table class="voter-table">
+          <thead>
+            <tr>
+              <th data-hi="वार्ड" data-en="Ward">वार्ड</th>
+              <th data-hi="मतदाता का नाम" data-en="Voter Name">मतदाता का नाम</th>
+              <th data-hi="पिता/पति का नाम" data-en="Father/Husband Name">पिता/पति का नाम</th>
+              <th data-hi="उम्र" data-en="Age">उम्र</th>
+              <th data-hi="लिंग" data-en="Gender">लिंग</th>
+              <th data-hi="मोबाइल" data-en="Mobile">मोबाइल</th>
+            </tr>
+          </thead>
+          <tbody id="voterTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section id="gallery">
+      <h2 data-hi="गैलरी — जनसंपर्क की तस्वीरें" data-en="Gallery — Public Outreach Photos">गैलरी — जनसंपर्क की तस्वीरें</h2>
+      <div class="gallery">
+        <div class="gallery-item">
+          <!-- <img src="img1.jpg" alt="Rally"> -->
+          <span data-hi="📸 जनसभा की तस्वीर" data-en="📸 Public meeting photo">📸 जनसभा की तस्वीर</span>
+        </div>
+        <div class="gallery-item">
+          <!-- <img src="img2.jpg" alt="Village visit"> -->
+          <span data-hi="📸 गाँव का दौरा" data-en="📸 Village visit">📸 गाँव का दौरा</span>
+        </div>
+        <div class="gallery-item">
+          <!-- <img src="img3.jpg" alt="Meeting women"> -->
+          <span data-hi="📸 महिलाओं से मुलाकात" data-en="📸 Meeting with women">📸 महिलाओं से मुलाकात</span>
+        </div>
+        <div class="gallery-item">
+          <!-- <img src="img4.jpg" alt="Youth meeting"> -->
+          <span data-hi="📸 युवाओं के साथ बैठक" data-en="📸 Meeting with youth">📸 युवाओं के साथ बैठक</span>
+        </div>
+      </div>
+      <p style="margin-top:14px; font-size:0.95rem; color:#627d98;"
+         data-hi="(अपनी असली तस्वीरें लगाने के लिए ऊपर दिए गए कोड में <img> टैग का उपयोग करें।)"
+         data-en="(To add your real photos, use the <img> tag in the code above.)">
+        (अपनी असली तस्वीरें लगाने के लिए ऊपर दिए गए कोड में &lt;img&gt; टैग का उपयोग करें।)
+      </p>
+    </section>
+
+    <!-- ============ VOLUNTEER ============ -->
+    <section id="volunteer">
+      <h2 data-hi="वालंटियर बनें — प्रचार में साथ दें" data-en="Become a Volunteer — Join the Campaign">वालंटियर बनें — प्रचार में साथ दें</h2>
+      <p style="margin-bottom:16px;"
+         data-hi="अगर आप Samlipathar के विकास के लिए मेरे साथ जुड़ना चाहते हैं, तो नीचे फॉर्म भरें। मैं या मेरी टीम आपसे संपर्क करेगी।"
+         data-en="If you want to join me for the development of Samlipathar, fill the form below. I or my team will contact you.">
+        अगर आप Samlipathar के विकास के लिए मेरे साथ जुड़ना चाहते हैं, तो नीचे फॉर्म भरें।
+        मैं या मेरी टीम आपसे संपर्क करेगी।
+      </p>
+      <form onsubmit="alert(document.documentElement.lang === 'hi' ? 'धन्यवाद! आपकी जानकारी सबमिट हो गई है। हम जल्द संपर्क करेंगे।' : 'Thank you! Your information has been submitted. We will contact you soon.'); return false;">
+        <div class="form-group">
+          <label for="name" data-hi="आपका नाम *" data-en="Your Name *">आपका नाम *</label>
+          <input type="text" id="name"
+                 data-hi-placeholder="जैसे: रामलाल यादव"
+                 data-en-placeholder="e.g. Ramlal Yadav"
+                 placeholder="जैसे: रामलाल यादव" required>
+        </div>
+        <div class="form-group">
+          <label for="mobile" data-hi="मोबाइल नंबर *" data-en="Mobile Number *">मोबाइल नंबर *</label>
+          <input type="tel" id="mobile"
+                 data-hi-placeholder="10 अंकों का नंबर"
+                 data-en-placeholder="10-digit number"
+                 placeholder="10 अंकों का नंबर" pattern="[0-9]{10}" required>
+        </div>
+        <div class="form-group">
+          <label for="village" data-hi="गाँव / मोहल्ला" data-en="Village / Area">गाँव / मोहल्ला</label>
+          <input type="text" id="village"
+                 data-hi-placeholder="जैसे: Samlipathar"
+                 data-en-placeholder="e.g. Samlipathar"
+                 placeholder="जैसे: Samlipathar">
+        </div>
+        <div class="form-group">
+          <label for="msg" data-hi="आप कैसे मदद कर सकते हैं?" data-en="How can you help?">आप कैसे मदद कर सकते हैं?</label>
+          <textarea id="msg" rows="3"
+                    data-hi-placeholder="जैसे: घर-घर प्रचार, सोशल मीडिया, बैठक व्यवस्था..."
+                    data-en-placeholder="e.g. Door-to-door campaign, social media, meeting arrangements..."
+                    placeholder="जैसे: घर-घर प्रचार, सोशल मीडिया, बैठक व्यवस्था..."></textarea>
+        </div>
+        <button type="submit" class="btn"
+                data-hi="वालंटियर के रूप में जुड़ें"
+                data-en="Join as Volunteer">वालंटियर के रूप में जुड़ें</button>
+      </form>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact">
+      <h2 data-hi="संपर्क करें" data-en="Contact Us">संपर्क करें</h2>
+      <div class="contact-row">
+        <div class="icon">📞</div>
+        <div>
+          <strong data-hi="मोबाइल:" data-en="Mobile:">मोबाइल:</strong>
+          <a href="tel:+910000000000" style="color:#1a6b4a;">+91 00000 00000</a>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="icon">💬</div>
+        <div>
+          <strong data-hi="WhatsApp:" data-en="WhatsApp:">WhatsApp:</strong>
+          <span data-hi="नीचे बटन दबाएँ" data-en="Tap the button below">नीचे बटन दबाएँ</span>
+        </div>
+      </div>
+      <a href="https://wa.me/910000000000?text=नमस्ते%2C%20मैं%20Samlipathar%20चुनाव%20में%20आपके%20साथ%20जुड़ना%20चाहता%20हूँ।"
+         class="btn btn-whatsapp" target="_blank" rel="noopener"
+         data-hi="💬 WhatsApp पर बात करें"
+         data-en="💬 Chat on WhatsApp">
+        💬 WhatsApp पर बात करें
+      </a>
+      <p style="margin-top:14px; font-size:0.9rem; color:#627d98;"
+         data-hi="(ऊपर दिए गए नंबर को अपने असली मोबाइल नंबर से बदलें।)"
+         data-en="(Replace the number above with your real mobile number.)">
+        (ऊपर दिए गए नंबर को अपने असली मोबाइल नंबर से बदलें।)
+      </p>
+    </section>
+
+    <!-- ============ LEGAL ============ -->
+    <section id="legal" style="background:#fff8e6; border:1px solid #f5b301;">
+      <h2 style="border-left-color:#d97706;"
+          data-hi="⚠️ कानूनी सूचना"
+          data-en="⚠️ Legal Notice">⚠️ कानूनी सूचना</h2>
+      <p style="font-size:0.95rem;"
+         data-hi="यह वेबसाइट चुनाव प्रचार के उद्देश्य से बनाई गई है। भारत निर्वाचन आयोग के नियमों के अनुसार, वेबसाइट निर्माण और डिजिटल प्रचार का खर्च चुनाव व्यय (Election Expenses) में शामिल किया जाना चाहिए। कृपया सुनिश्चित करें कि इस वेबसाइट पर आदर्श आचार संहिता (Model Code of Conduct) का उल्लंघन करने वाली कोई सामग्री न हो।"
+         data-en="This website has been created for election campaigning. As per the rules of the Election Commission of India, the cost of website creation and digital campaigning should be included in Election Expenses. Please ensure that this website does not contain any content that violates the Model Code of Conduct.">
+        यह वेबसाइट चुनाव प्रचार के उद्देश्य से बनाई गई है। भारत निर्वाचन आयोग के नियमों के अनुसार,
+        वेबसाइट निर्माण और डिजिटल प्रचार का खर्च <strong>चुनाव व्यय (Election Expenses)</strong> में शामिल किया जाना चाहिए।
+        कृपया सुनिश्चित करें कि इस वेबसाइट पर आदर्श आचार संहिता (Model Code of Conduct) का उल्लंघन करने वाली कोई सामग्री न हो।
+      </p>
+    </section>
 
   </div>
-</div>
 
-<footer class="text-center text-muted py-3">
-  ⚡ ग्राम पंचायत सामलीपठार - चुनाव प्रसार प्रणाली v3.0 (Final)
-</footer>
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="container">
+      <p data-hi="© 2026 [आपका नाम] — Samlipathar Gram Panchayat Chunav"
+         data-en="© 2026 [Your Name] — Samlipathar Gram Panchayat Election">
+        © 2026 [आपका नाम] — Samlipathar Gram Panchayat Chunav
+      </p>
+      <p style="margin-top:6px;"
+         data-hi="आपका साथ, गाँव का विकास 🙏"
+         data-en="Your Support, Village Development 🙏">
+        आपका साथ, गाँव का विकास 🙏
+      </p>
+    </div>
+  </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- ============ SCRIPTS ============ -->
+  <script>
+    /* ========== 1. Google Sheet Configuration ========== */
+    // 👇 इन दो लाइनों को अपने Google Sheet की ID और GID से बदलें
+    const SHEET_ID = 'PASTE_YOUR_GOOGLE_SHEET_ID_HERE';
+    const SHEET_GID = 'PASTE_YOUR_GID_HERE'; // आमतौर पर '0'
+
+    // Google Visualization API से CSV डेटा लाना (CORS के लिए सुरक्षित)
+    const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${SHEET_GID}`;
+
+    let voterData = [];        // सारा डेटा
+    let currentLang = 'hi';    // भाषा ट्रैकिंग
+
+    /* ========== 2. Fetch Voter Data ========== */
+    function loadVoterList() {
+      const statusEl = document.getElementById('voterStatus');
+
+      fetch(SHEET_URL)
+        .then(res => {
+          if (!res.ok) throw new Error('Network error');
+          return res.text();
+        })
+        .then(csvText => {
+          voterData = parseCSV(csvText);
+          if (voterData.length === 0) {
+            statusEl.innerHTML = currentLang === 'hi'
+              ? 'कोई मतदाता डेटा नहीं मिला।'
+              : 'No voter data found.';
+            return;
+          }
+          populateWardFilter();
+          renderVoterList();
+        })
+        .catch(err => {
+          console.error('Voter list load failed:', err);
+          statusEl.innerHTML = currentLang === 'hi'
+            ? '⚠️ डेटा लोड नहीं हो सका। कृपया जाँचें कि Google Sheet "Anyone with link" पर साझा है।'
+            : '⚠️ Could not load data. Please check that the Google Sheet is shared as "Anyone with link".';
+        });
+    }
+
+    /* ========== 3. Parse CSV ========== */
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let field = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+
+        if (inQuotes) {
+          if (c === '"') {
+            if (text[i + 1] === '"') { field += '"'; i++; }
+            else { inQuotes = false; }
+          } else { field += c; }
+        } else {
+          if (c === '"') { inQuotes = true; }
+          else if (c === ',') { row.push(field); field = ''; }
+          else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+          else if (c === '\r') { /* skip */ }
+          else { field += c; }
+        }
+      }
+      if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
+
+      if (rows.length < 2) return [];
+
+      const headers = rows[0].map(h => h.trim().toLowerCase());
+      const data = [];
+
+      for (let i = 1; i < rows.length; i++) {
+        const r = rows[i];
+        if (!r || r.length === 0 || r.every(c => !c.trim())) continue;
+
+        const obj = {};
+        headers.forEach((h, idx) => {
+          obj[h] = (r[idx] || '').trim();
+        });
+        data.push(obj);
+      }
+      return data;
+    }
+
+    /* ========== 4. Populate Ward Filter ========== */
+    function populateWardFilter() {
+      const select = document.getElementById('wardFilter');
+      const currentVal = select.value;
+      const wards = [...new Set(voterData.map(v => v.ward).filter(Boolean))];
+
+      // Reset (keep first option)
+      select.innerHTML = '';
+      const first = document.createElement('option');
+      first.value = '';
+      first.textContent = currentLang === 'hi' ? '-- सभी वार्ड --' : '-- All Wards --';
+      select.appendChild(first);
+
+      wards.forEach(w => {
+        const opt = document.createElement('option');
+        opt.value = w;
+        opt.textContent = w;
+        select.appendChild(opt);
+      });
+
+      if (wards.includes(currentVal)) select.value = currentVal;
+    }
+
+    /* ========== 5. Render Voter Table ========== */
+    function renderVoterList() {
+      const statusEl = document.getElementById('voterStatus');
+      const tableWrap = document.getElementById('voterTableWrap');
+      const tbody = document.getElementById('voterTableBody');
+
+      const wardFilter = document.getElementById('wardFilter').value;
+      const search = document.getElementById('searchBox').value.trim().toLowerCase();
+
+      let filtered = voterData;
+      if (wardFilter) filtered = filtered.filter(v => v.ward === wardFilter);
+      if (search) {
+        filtered = filtered.filter(v =>
+          (v['voter name'] || '').toLowerCase().includes(search) ||
+          (v['father/husband name'] || '').toLowerCase().includes(search)
+        );
+      }
+
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tableWrap.style.display = 'none';
+        statusEl.style.display = 'block';
+        statusEl.innerHTML = currentLang === 'hi'
+          ? 'कोई मतदाता नहीं मिला।'
+          : 'No voters found.';
+        return;
+      }
+
+      filtered.forEach(v => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="ward-badge">${escapeHtml(v.ward || '-')}</span></td>
+          <td>${escapeHtml(v['voter name'] || '-')}</td>
+          <td>${escapeHtml(v['father/husband name'] || '-')}</td>
+          <td>${escapeHtml(v.age || '-')}</td>
+          <td>${escapeHtml(v.gender || '-')}</td>
+          <td>${escapeHtml(v.mobile || '-')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      tableWrap.style.display = 'block';
+      statusEl.style.display = 'block';
+      statusEl.innerHTML = currentLang === 'hi'
+        ? `कुल ${filtered.length} मतदाता मिले।`
+        : `Found ${filtered.length} voters.`;
+    }
+
+    /* ========== 6. Escape HTML ========== */
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /* ========== 7. Language Switcher ========== */
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      document.getElementById('btn-hi').classList.toggle('active', lang === 'hi');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+      document.querySelectorAll('[data-hi]').forEach(function (el) {
+        var text = el.getAttribute('data-' + lang);
+        if (text) el.innerHTML = text;
+      });
+
+      document.querySelectorAll('[data-hi-placeholder]').forEach(function (el) {
+        var ph = el.getAttribute('data-' + lang + '-placeholder');
+        if (ph) el.setAttribute('placeholder', ph);
+      });
+
+      // Update ward filter first option
+      populateWardFilter();
+
+      // Re-render voter list so status text updates
+      if (voterData.length > 0) renderVoterList();
+
+      try { localStorage.setItem('samlipathar-lang', lang); } catch (e) {}
+    }
+
+    /* ========== 8. Page Init ========== */
+    (function init() {
+      // Load saved language
+      let saved = null;
+      try { saved = localStorage.getItem('samlipathar-lang'); } catch (e) {}
+      setLang(saved === 'en' ? 'en' : 'hi');
+
+      // Load voter list from Google Sheet
+      loadVoterList();
+    })();
+  </script>
+
 </body>
 </html>
