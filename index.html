@@ -8,58 +8,38 @@
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI','Noto Sans Devanagari',Arial,sans-serif; }
 body { background:#f4f6f9; color:#1e2a3a; line-height:1.7; }
 .container { max-width:900px; margin:0 auto; padding:0 16px; }
-
-/* Language */
 .lang-bar { position:fixed; top:12px; right:12px; z-index:999; display:flex; gap:6px; background:rgba(255,255,255,0.95); padding:5px; border-radius:50px; box-shadow:0 2px 10px rgba(0,0,0,0.15); }
 .lang-bar button { border:none; background:transparent; padding:7px 16px; border-radius:50px; font-size:0.9rem; font-weight:700; cursor:pointer; color:#0b3d2e; }
 .lang-bar button.active { background:#1a6b4a; color:white; }
-
-/* Nav */
 nav { background:#0b3d2e; position:sticky; top:0; z-index:998; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
 nav ul { list-style:none; display:flex; flex-wrap:wrap; justify-content:center; gap:4px; padding:8px 6px; }
 nav ul li a { display:block; color:white; text-decoration:none; padding:8px 14px; border-radius:8px; font-size:0.95rem; font-weight:600; cursor:pointer; }
 nav ul li a:hover, nav ul li a.active { background:#1a6b4a; }
-
-/* Page */
 .page { display:none; }
 .page.active { display:block; }
-
-/* Header */
 header { background:linear-gradient(135deg,#0b3d2e,#1a6b4a); color:white; padding:50px 0 30px; text-align:center; border-bottom:6px solid #f5b301; }
 header h1 { font-size:2.2rem; font-weight:800; margin-bottom:8px; }
 header p { font-size:1.15rem; opacity:0.95; max-width:600px; margin:0 auto; }
 .slogan { display:inline-block; background:#f5b301; color:#0b3d2e; font-weight:700; padding:6px 22px; border-radius:40px; margin-top:18px; font-size:1.1rem; }
-
-/* Sections */
 section { background:white; border-radius:16px; padding:28px 24px; margin:24px 0; box-shadow:0 4px 16px rgba(0,0,0,0.06); }
 section h2 { font-size:1.6rem; color:#0b3d2e; border-left:6px solid #f5b301; padding-left:14px; margin-bottom:18px; }
-
-/* Motivational Poster */
 .poster { background:linear-gradient(135deg,#1a6b4a,#0b3d2e); color:white; border-radius:20px; padding:32px 24px; text-align:center; margin-bottom:20px; position:relative; overflow:hidden; }
 .poster::before { content:""; position:absolute; top:-50%; right:-20%; width:300px; height:300px; background:radial-gradient(circle,rgba(245,179,1,0.3),transparent 70%); border-radius:50%; }
 .poster .quote { font-size:1.4rem; font-weight:800; margin-bottom:12px; line-height:1.5; position:relative; }
 .poster .sub { font-size:1rem; opacity:0.9; position:relative; }
 .poster .emoji { font-size:3rem; display:block; margin-bottom:10px; }
-
-/* Home Cards */
 .home-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; }
 .home-card { background:#eef7f2; border-radius:14px; padding:20px 16px; text-align:center; border-bottom:4px solid #1a6b4a; cursor:pointer; text-decoration:none; color:#1e2a3a; display:block; transition:transform 0.2s; }
 .home-card:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.1); }
 .home-card .emoji { font-size:2.2rem; display:block; margin-bottom:6px; }
 .home-card .label { font-weight:700; font-size:1.05rem; color:#0b3d2e; }
-
-/* Candidate */
 .candidate-box { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
 .candidate-photo { width:130px; height:130px; border-radius:50%; background:#d9e2ec; display:flex; align-items:center; justify-content:center; font-size:3rem; flex-shrink:0; border:4px solid #f5b301; overflow:hidden; }
 .candidate-info h3 { font-size:1.5rem; color:#0b3d2e; }
 .candidate-info .role { color:#f5b301; font-weight:700; font-size:1rem; margin-bottom:6px; }
-
-/* Vision */
 .vision-list { list-style:none; display:grid; gap:12px; }
 .vision-list li { background:#eef7f2; padding:14px 18px; border-radius:10px; font-size:1.05rem; border-left:5px solid #1a6b4a; display:flex; gap:10px; }
 .vision-list li .num { background:#1a6b4a; color:white; font-weight:700; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
-
-/* Login */
 .login-box { max-width:400px; margin:0 auto; background:#f9fbfd; border-radius:16px; padding:28px 24px; border:2px solid #cbd6e2; text-align:center; }
 .login-box .lock-icon { font-size:3rem; margin-bottom:10px; }
 .login-box h3 { color:#0b3d2e; margin-bottom:8px; font-size:1.3rem; }
@@ -67,8 +47,6 @@ section h2 { font-size:1.6rem; color:#0b3d2e; border-left:6px solid #f5b301; pad
 .login-box input { width:100%; padding:13px 16px; border:2px solid #cbd6e2; border-radius:10px; font-size:1rem; margin-bottom:14px; text-align:center; }
 .login-box input:focus { border-color:#1a6b4a; outline:none; }
 .login-error { color:#d32f2f; font-size:0.9rem; margin-top:10px; min-height:20px; }
-
-/* Admin panel */
 .admin-panel { display:none; }
 .admin-panel.visible { display:block; }
 .admin-top-bar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
@@ -76,22 +54,18 @@ section h2 { font-size:1.6rem; color:#0b3d2e; border-left:6px solid #f5b301; pad
 .voter-controls select,.voter-controls input { padding:10px 14px; border:2px solid #cbd6e2; border-radius:10px; font-size:1rem; background:#f9fbfd; flex:1; min-width:180px; }
 .voter-status { text-align:center; padding:16px; color:#627d98; }
 .voter-table-wrap { overflow-x:auto; border-radius:12px; border:1px solid #d9e2ec; }
-table.voter-table { width:100%; border-collapse:collapse; font-size:0.95rem; min-width:800px; }
+table.voter-table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:900px; }
 table.voter-table thead { background:#1a6b4a; color:white; }
-table.voter-table th { padding:12px 14px; text-align:left; white-space:nowrap; }
-table.voter-table td { padding:11px 14px; border-bottom:1px solid #eef2f6; }
+table.voter-table th { padding:12px 10px; text-align:left; white-space:nowrap; }
+table.voter-table td { padding:10px; border-bottom:1px solid #eef2f6; }
 table.voter-table tbody tr:nth-child(even) { background:#f9fbfd; }
 table.voter-table td input[type="checkbox"] { width:20px; height:20px; }
 .ward-badge { display:inline-block; background:#f5b301; color:#0b3d2e; font-weight:700; padding:3px 10px; border-radius:20px; font-size:0.82rem; }
-
-/* Action buttons */
 .action-btns { display:flex; gap:6px; flex-wrap:nowrap; }
 .btn-call,.btn-wa { display:inline-flex; align-items:center; gap:4px; color:white; padding:7px 12px; border-radius:50px; text-decoration:none; font-weight:700; font-size:0.82rem; white-space:nowrap; }
 .btn-call { background:#25D366; }
 .btn-wa { background:#128C7E; }
 .btn-call.disabled,.btn-wa.disabled { background:#cbd6e2; color:#627d98; pointer-events:none; }
-
-/* Buttons */
 .btn { display:inline-block; background:#1a6b4a; color:white; font-weight:700; padding:14px 32px; border-radius:50px; border:none; font-size:1.05rem; cursor:pointer; text-decoration:none; text-align:center; }
 .btn:hover { background:#0b3d2e; }
 .btn:disabled { background:#cbd6e2; cursor:not-allowed; }
@@ -99,33 +73,21 @@ table.voter-table td input[type="checkbox"] { width:20px; height:20px; }
 .btn-orange { background:#f5b301; color:#0b3d2e; }
 .btn-gray { background:#627d98; }
 .btn-whatsapp { background:#25D366; display:inline-flex; align-items:center; gap:8px; justify-content:center; }
-.btn-whatsapp:hover { background:#1da851; }
-
-/* Note buttons */
 .note-btns { display:flex; gap:4px; flex-wrap:nowrap; }
 .note-btn { border:none; padding:5px 10px; border-radius:20px; font-size:0.75rem; font-weight:700; cursor:pointer; color:white; }
 .note-support { background:#25D366; }
 .note-not { background:#d32f2f; }
 .note-team { background:#1976d2; }
 .note-undecided { background:#f5b301; color:#0b3d2e; }
-
-/* Gallery */
 .gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
 .gallery-item { background:#d9e2ec; border-radius:12px; height:140px; display:flex; align-items:center; justify-content:center; color:#486581; text-align:center; padding:10px; }
-
-/* Form */
 .form-group { margin-bottom:16px; }
 .form-group label { display:block; font-weight:600; margin-bottom:6px; }
-.form-group input,.form-group textarea,.form-group select { width:100%; padding:12px 14px; border:2px solid #cbd6e2; border-radius:10px; font-size:1rem; background:#f9fbfd; }
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus { border-color:#1a6b4a; outline:none; }
-
-/* Contact */
+.form-group input,.form-group textarea { width:100%; padding:12px 14px; border:2px solid #cbd6e2; border-radius:10px; font-size:1rem; background:#f9fbfd; }
+.form-group input:focus,.form-group textarea:focus { border-color:#1a6b4a; outline:none; }
 .contact-row { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
 .contact-row .icon { background:#eef7f2; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
-
 footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; border-top:1px solid #d9e2ec; margin-top:20px; }
-
-/* Responsive */
 @media (max-width:520px) {
   header h1 { font-size:1.5rem; }
   .candidate-box { flex-direction:column; text-align:center; }
@@ -160,7 +122,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
   </ul>
 </nav>
 
-<!-- =================== HOME PAGE =================== -->
 <div id="page-home" class="page active">
   <header>
     <div class="container">
@@ -170,8 +131,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
     </div>
   </header>
   <div class="container">
-
-    <!-- Motivational Poster -->
     <section style="padding:0; background:transparent; box-shadow:none;">
       <div class="poster">
         <span class="emoji">🏆</span>
@@ -179,8 +138,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
         <div class="sub">आइए, मिलकर Samlipathar को बनाएँ — भारत का आदर्श गाँव 🌟</div>
       </div>
     </section>
-
-    <!-- Second Poster -->
     <section style="background:linear-gradient(135deg,#f5b301,#d99e00); color:#0b3d2e;">
       <h2 style="color:#0b3d2e; border-left-color:#0b3d2e;">🎯 हमारा संकल्प</h2>
       <p style="font-size:1.15rem; font-weight:700; line-height:1.8;">
@@ -191,7 +148,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
         "जब गाँव जागता है, तब देश जागता है।" — हम सब मिलकर Samlipathar को नई ऊँचाई पर पहुँचाएँगे।
       </p>
     </section>
-
     <section>
       <h2>🏠 एक नज़र में</h2>
       <div class="home-cards">
@@ -206,7 +162,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
   </div>
 </div>
 
-<!-- =================== ABOUT =================== -->
 <div id="page-about" class="page">
   <div class="container">
     <section style="margin-top:24px;">
@@ -223,7 +178,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
   </div>
 </div>
 
-<!-- =================== VISION =================== -->
 <div id="page-vision" class="page">
   <div class="container">
     <section style="margin-top:24px;">
@@ -244,24 +198,18 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
   </div>
 </div>
 
-<!-- =================== MAP =================== -->
 <div id="page-map" class="page">
   <div class="container">
     <section style="margin-top:24px;">
       <h2>🗺️ Samlipathar वार्ड नक्शा</h2>
-      <p style="margin-bottom:16px;">नीचे हमारे गाँव का नक्शा है। वार्ड पर क्लिक करके देखें।</p>
-      <div id="mapContainer" style="width:100%; height:400px; border-radius:12px; overflow:hidden; border:2px solid #cbd6e2;">
-        <iframe id="mapFrame" 
-          src="https://www.google.com/maps?q=Samlipathar&output=embed"
-          width="100%" height="100%" style="border:0;" loading="lazy">
-        </iframe>
+      <p style="margin-bottom:16px;">नीचे हमारे गाँव का नक्शा है।</p>
+      <div style="width:100%; height:400px; border-radius:12px; overflow:hidden; border:2px solid #cbd6e2;">
+        <iframe src="https://www.google.com/maps?q=Samlipathar&output=embed" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>
       </div>
-      <div id="wardLinks" style="margin-top:16px;"></div>
     </section>
   </div>
 </div>
 
-<!-- =================== GALLERY =================== -->
 <div id="page-gallery" class="page">
   <div class="container">
     <section style="margin-top:24px;">
@@ -276,71 +224,53 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
   </div>
 </div>
 
-<!-- =================== VOLUNTEER =================== -->
 <div id="page-volunteer" class="page">
   <div class="container">
     <section style="margin-top:24px;">
       <h2>🤝 वालंटियर बनें</h2>
       <p style="margin-bottom:16px;">अगर आप Samlipathar के विकास के लिए मेरे साथ जुड़ना चाहते हैं, तो फॉर्म भरें।</p>
       <form id="volunteerForm" onsubmit="submitVolunteer(event)">
-        <div class="form-group">
-          <label>आपका नाम *</label>
-          <input type="text" id="volName" required>
-        </div>
-        <div class="form-group">
-          <label>मोबाइल नंबर *</label>
-          <input type="tel" id="volMobile" pattern="[0-9]{10}" required>
-        </div>
-        <div class="form-group">
-          <label>गाँव / मोहल्ला</label>
-          <input type="text" id="volVillage">
-        </div>
-        <div class="form-group">
-          <label>आप कैसे मदद कर सकते हैं?</label>
-          <textarea id="volMessage" rows="3"></textarea>
-        </div>
+        <div class="form-group"><label>आपका नाम *</label><input type="text" id="volName" required></div>
+        <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="volMobile" pattern="[0-9]{10}" required></div>
+        <div class="form-group"><label>गाँव / मोहल्ला</label><input type="text" id="volVillage"></div>
+        <div class="form-group"><label>आप कैसे मदद कर सकते हैं?</label><textarea id="volMessage" rows="3"></textarea></div>
         <button type="submit" class="btn" id="volSubmitBtn">जुड़ें</button>
       </form>
     </section>
   </div>
 </div>
 
-<!-- =================== ADMIN =================== -->
 <div id="page-admin" class="page">
   <div class="container">
     <section style="margin-top:24px;">
       <h2>🔐 लॉगिन — मतदाता सूची</h2>
 
-      <!-- Login Selection -->
       <div id="loginTypeSelect" class="login-box">
         <div class="lock-icon">🔒</div>
         <h3>कौन लॉगिन कर रहा है?</h3>
-        <p>कृपया चुनें — Admin या Team Member</p>
+        <p>Admin या Team Member चुनें</p>
         <button class="btn" style="width:100%; margin-bottom:10px;" onclick="showLoginForm('admin')">👑 Admin Login</button>
         <button class="btn btn-orange" style="width:100%;" onclick="showLoginForm('team')">👥 Team Login</button>
       </div>
 
-      <!-- Admin Login Form -->
       <div id="adminLoginBox" class="login-box" style="display:none;">
         <div class="lock-icon">👑</div>
         <h3>Admin Login</h3>
-        <input type="password" id="adminPassword" placeholder="Admin पासवर्ड डालें" onkeydown="if(event.key==='Enter')checkLogin()">
+        <input type="password" id="adminPassword" placeholder="Admin पासवर्ड" onkeydown="if(event.key==='Enter')checkLogin()">
         <button class="btn" style="width:100%;" id="loginBtn" onclick="checkLogin()">लॉगिन करें</button>
         <button class="btn btn-gray" style="width:100%; margin-top:8px;" onclick="backToLoginSelect()">← वापस</button>
         <div class="login-error" id="loginError"></div>
       </div>
 
-      <!-- Team Login Form -->
       <div id="teamLoginBox" class="login-box" style="display:none;">
         <div class="lock-icon">👥</div>
         <h3>Team Login</h3>
-        <input type="password" id="teamPassword" placeholder="Team पासवर्ड डालें" onkeydown="if(event.key==='Enter')checkTeamLogin()">
+        <input type="password" id="teamPassword" placeholder="Team पासवर्ड" onkeydown="if(event.key==='Enter')checkTeamLogin()">
         <button class="btn btn-orange" style="width:100%;" onclick="checkTeamLogin()">टीम लॉगिन</button>
         <button class="btn btn-gray" style="width:100%; margin-top:8px;" onclick="backToLoginSelect()">← वापस</button>
         <div class="login-error" id="teamLoginError"></div>
       </div>
 
-      <!-- Team Registration (after team login) -->
       <div id="teamRegisterBox" class="login-box" style="display:none;">
         <div class="lock-icon">✍️</div>
         <h3>टीम में शामिल हों</h3>
@@ -351,7 +281,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
         <button class="btn btn-orange" style="width:100%;" onclick="registerTeamMember()">रजिस्टर करें</button>
       </div>
 
-      <!-- Admin Panel -->
       <div class="admin-panel" id="adminPanel">
         <div class="admin-top-bar">
           <button class="btn btn-red" onclick="logout()">🚪 लॉगआउट</button>
@@ -360,42 +289,29 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
           <button class="btn btn-orange" onclick="showTeamMembers()">👥 टीम</button>
           <button class="btn btn-orange" onclick="showTeamNotes()">📝 नोट्स</button>
         </div>
-
-        <p style="margin-bottom:16px; color:#1a6b4a; font-weight:600;">✅ Admin लॉगिन सफल। नीचे पूरी सूची है।</p>
-
+        <p style="margin-bottom:16px; color:#1a6b4a; font-weight:600;">✅ Admin लॉगिन सफल।</p>
         <div class="voter-controls">
-          <select id="wardFilter" onchange="renderVoterList()">
-            <option value="">-- सभी वार्ड --</option>
-          </select>
-          <input type="text" id="searchBox" placeholder="नाम या मोबाइल..." oninput="renderVoterList()">
+          <select id="wardFilter" onchange="renderVoterList()"><option value="">-- सभी वार्ड --</option></select>
+          <input type="text" id="searchBox" placeholder="नाम / EPIC / मोबाइल..." oninput="renderVoterList()">
         </div>
-
         <div style="margin-bottom:14px; display:flex; gap:10px; flex-wrap:wrap;">
           <button class="btn btn-orange" style="padding:10px 20px; font-size:0.9rem;" onclick="selectAllFiltered()">☑️ सभी चुनें</button>
           <button class="btn btn-gray" style="padding:10px 20px; font-size:0.9rem;" onclick="clearSelection()">⬜ हटाएँ</button>
           <button class="btn btn-whatsapp" style="padding:10px 20px; font-size:0.9rem;" onclick="broadcastWhatsApp()">📢 Broadcast</button>
         </div>
-
         <div class="voter-status" id="voterStatus">लोड हो रहा है...</div>
         <div class="voter-table-wrap" id="voterTableWrap" style="display:none;">
           <table class="voter-table">
             <thead>
               <tr>
-                <th>☑️</th>
-                <th>वार्ड</th>
-                <th>नाम</th>
-                <th>पिता/पति</th>
-                <th>उम्र</th>
-                <th>लिंग</th>
-                <th>मोबाइल</th>
-                <th>कार्रवाई</th>
-                <th>टीम नोट</th>
+                <th>☑️</th><th>वार्ड</th><th>क्र.सं.</th><th>EPIC ID</th><th>नाम</th>
+                <th>पिता/पति</th><th>मकान</th><th>आयु</th><th>लिंग</th><th>गाँव</th>
+                <th>मोबाइल</th><th>कार्रवाई</th><th>नोट</th>
               </tr>
             </thead>
             <tbody id="voterTableBody"></tbody>
           </table>
         </div>
-
         <div id="volunteerList" style="display:none; margin-top:20px;">
           <h3 style="color:#0b3d2e; margin-bottom:10px;">🤝 वालंटियर सूची</h3>
           <div class="voter-table-wrap">
@@ -405,7 +321,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
             </table>
           </div>
         </div>
-
         <div id="teamMembersList" style="display:none; margin-top:20px;">
           <h3 style="color:#0b3d2e; margin-bottom:10px;">👥 टीम सदस्य</h3>
           <div class="voter-table-wrap">
@@ -415,7 +330,6 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
             </table>
           </div>
         </div>
-
         <div id="teamNotesList" style="display:none; margin-top:20px;">
           <h3 style="color:#0b3d2e; margin-bottom:10px;">📝 टीम नोट्स</h3>
           <div class="voter-table-wrap">
@@ -427,35 +341,29 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
         </div>
       </div>
 
-      <!-- Team Panel -->
       <div class="admin-panel" id="teamPanel">
         <div class="admin-top-bar">
           <button class="btn btn-red" onclick="logout()">🚪 लॉगआउट</button>
-          <button class="btn btn-orange" onclick="showTeamNotesByMe()">📝 मेरे नोट्स</button>
         </div>
-        <p style="margin-bottom:16px; color:#1a6b4a; font-weight:600;">✅ टीम लॉगिन सफल। नीचे मतदाता सूची है। हर मतदाता के लिए Support / Not Support / In Team चुनें।</p>
+        <p style="margin-bottom:16px; color:#1a6b4a; font-weight:600;">✅ टीम लॉगिन सफल। हर मतदाता के लिए Support / Not Support / In Team चुनें।</p>
         <div class="voter-controls">
-          <select id="teamWardFilter" onchange="renderTeamVoterList()">
-            <option value="">-- सभी वार्ड --</option>
-          </select>
+          <select id="teamWardFilter" onchange="renderTeamVoterList()"><option value="">-- सभी वार्ड --</option></select>
           <input type="text" id="teamSearchBox" placeholder="नाम खोजें..." oninput="renderTeamVoterList()">
         </div>
         <div class="voter-status" id="teamVoterStatus">लोड हो रहा है...</div>
         <div class="voter-table-wrap" id="teamVoterTableWrap" style="display:none;">
           <table class="voter-table">
             <thead>
-              <tr><th>वार्ड</th><th>नाम</th><th>पिता/पति</th><th>उम्र</th><th>मोबाइल</th><th>नोट करें</th></tr>
+              <tr><th>वार्ड</th><th>नाम</th><th>पिता/पति</th><th>आयु</th><th>मोबाइल</th><th>नोट करें</th></tr>
             </thead>
             <tbody id="teamVoterTableBody"></tbody>
           </table>
         </div>
       </div>
-
     </section>
   </div>
 </div>
 
-<!-- =================== CONTACT =================== -->
 <div id="page-contact" class="page">
   <div class="container">
     <section style="margin-top:24px;">
@@ -476,10 +384,8 @@ footer { text-align:center; padding:28px 16px; color:#627d98; font-size:0.9rem; 
 </footer>
 
 <script>
-/* ============================================================
-   ⚠️ अपना Apps Script URL यहाँ डालें
-   ============================================================ */
-const API_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+/* ⚠️⚠️⚠️ यहाँ अपना Apps Script URL डालें ⚠️⚠️⚠️ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbwbb-6UnzyTYSkC7pPOKa4eGf5OWasfGltuXz8thFK7JyJpapHp1kCNRRUNNkycP5Knyg/exec';
 
 let voterData = [];
 let currentLang = 'hi';
@@ -489,9 +395,7 @@ let currentTeamName = '';
 let teamNotes = {};
 let broadcastQueue = [], broadcastIndex = 0;
 
-/* ============================================================
-   PAGE NAVIGATION
-   ============================================================ */
+/* PAGE NAVIGATION */
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
@@ -501,15 +405,12 @@ function showPage(name) {
   window.scrollTo(0, 0);
 }
 
-/* ============================================================
-   LOGIN UI
-   ============================================================ */
+/* LOGIN UI */
 function showLoginForm(type) {
   document.getElementById('loginTypeSelect').style.display = 'none';
   if (type === 'admin') document.getElementById('adminLoginBox').style.display = 'block';
   else document.getElementById('teamLoginBox').style.display = 'block';
 }
-
 function backToLoginSelect() {
   document.getElementById('loginTypeSelect').style.display = 'block';
   document.getElementById('adminLoginBox').style.display = 'none';
@@ -519,25 +420,16 @@ function backToLoginSelect() {
   document.getElementById('teamLoginError').textContent = '';
 }
 
-/* ============================================================
-   ADMIN LOGIN
-   ============================================================ */
+/* ADMIN LOGIN */
 function checkLogin() {
   const input = document.getElementById('adminPassword');
   const errorEl = document.getElementById('loginError');
   const btn = document.getElementById('loginBtn');
   const password = input.value.trim();
-
   if (!password) { errorEl.textContent = 'पासवर्ड डालें।'; return; }
-
+  if (API_URL.indexOf('PASTE_YOUR') !== -1) { errorEl.textContent = '⚠️ API_URL नहीं डाला!'; return; }
   btn.disabled = true; btn.textContent = 'जाँच...'; errorEl.textContent = '';
-
-  fetch(API_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: 'action=login&password=' + encodeURIComponent(password)
-  })
-  .then(() => fetch(API_URL + '?action=login&password=' + encodeURIComponent(password)))
+  fetch(API_URL + '?action=login&password=' + encodeURIComponent(password))
   .then(res => res.json())
   .then(result => {
     if (result.success) {
@@ -550,10 +442,11 @@ function checkLogin() {
         document.getElementById('voterStatus').textContent = 'कोई मतदाता नहीं मिला।';
       } else {
         populateWardFilter();
+        loadTeamNotesForAdmin(password);
         renderVoterList();
       }
     } else {
-      errorEl.textContent = '❌ गलत पासवर्ड।';
+      errorEl.textContent = '❌ ' + (result.message || 'गलत पासवर्ड');
       input.value = '';
     }
   })
@@ -561,18 +454,13 @@ function checkLogin() {
   .finally(() => { btn.disabled = false; btn.textContent = 'लॉगिन करें'; });
 }
 
-/* ============================================================
-   TEAM LOGIN
-   ============================================================ */
+/* TEAM LOGIN */
 function checkTeamLogin() {
   const input = document.getElementById('teamPassword');
   const errorEl = document.getElementById('teamLoginError');
   const password = input.value.trim();
-
   if (!password) { errorEl.textContent = 'टीम पासवर्ड डालें।'; return; }
-
   errorEl.textContent = 'जाँच...';
-
   fetch(API_URL + '?action=teamLogin&password=' + encodeURIComponent(password))
   .then(res => res.json())
   .then(result => {
@@ -582,236 +470,188 @@ function checkTeamLogin() {
       document.getElementById('loginTypeSelect').style.display = 'none';
       document.getElementById('teamLoginBox').style.display = 'none';
       document.getElementById('teamRegisterBox').style.display = 'block';
+      window.teamPass = password;
     } else {
-      errorEl.textContent = '❌ गलत टीम पासवर्ड।';
+      errorEl.textContent = '❌ ' + (result.message || 'गलत टीम पासवर्ड');
       input.value = '';
     }
   })
   .catch(err => { console.error(err); errorEl.textContent = '⚠️ सर्वर error।'; });
 }
 
+/* TEAM REGISTER */
 function registerTeamMember() {
   const name = document.getElementById('teamName').value.trim();
   const mobile = document.getElementById('teamMobile').value.trim();
   const ward = document.getElementById('teamWard').value.trim();
-
   if (!name || !mobile) { alert('नाम और मोबाइल ज़रूरी है।'); return; }
   if (!/^[0-9]{10}$/.test(mobile)) { alert('10 अंकों का मोबाइल डालें।'); return; }
-
   currentTeamName = name;
-
-  const body = 'action=teamRegister'
-    + '&password=' + encodeURIComponent(document.getElementById('teamPassword').value)
-    + '&name=' + encodeURIComponent(name)
-    + '&mobile=' + encodeURIComponent(mobile)
-    + '&ward=' + encodeURIComponent(ward);
-
-  fetch(API_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body
-  })
-  .then(() => {
-    document.getElementById('teamRegisterBox').style.display = 'none';
-    document.getElementById('teamPanel').classList.add('visible');
-    populateTeamWardFilter();
-    renderTeamVoterList();
-    loadTeamNotes();
-  })
-  .catch(err => { console.error(err); alert('रजिस्टर नहीं हो सका।'); });
+  const url = API_URL + '?action=teamRegister&password=' + encodeURIComponent(window.teamPass) + '&name=' + encodeURIComponent(name) + '&mobile=' + encodeURIComponent(mobile) + '&ward=' + encodeURIComponent(ward);
+  fetch(url).then(res => res.json()).then(result => {
+    if (result.success) {
+      document.getElementById('teamRegisterBox').style.display = 'none';
+      document.getElementById('teamPanel').classList.add('visible');
+      populateTeamWardFilter();
+      loadTeamNotesForTeam();
+      renderTeamVoterList();
+    } else { alert('रजिस्टर नहीं हो सका।'); }
+  }).catch(err => { console.error(err); alert('रजिस्टर नहीं हो सका।'); });
 }
 
-/* ============================================================
-   LOAD TEAM NOTES
-   ============================================================ */
-function loadTeamNotes() {
-  const password = isAdmin ? document.getElementById('adminPassword').value : document.getElementById('teamPassword').value;
-  fetch(API_URL + '?action=' + (isAdmin ? 'getTeamNotes' : 'teamLogin') + '&password=' + encodeURIComponent(password))
+/* LOAD NOTES */
+function loadTeamNotesForAdmin(password) {
+  fetch(API_URL + '?action=getTeamNotes&password=' + encodeURIComponent(password))
   .then(res => res.json())
   .then(result => {
     if (result.success && result.data) {
       teamNotes = {};
       result.data.forEach(n => {
-        if (n['voter mobile']) {
-          teamNotes[n['voter mobile']] = n.status || '';
-        }
+        const key = (n['voter mobile'] || '').replace(/\D/g, '');
+        if (key) teamNotes[key] = n.status || '';
       });
+      renderVoterList();
     }
-  })
-  .catch(err => console.error(err));
+  }).catch(err => console.error(err));
+}
+function loadTeamNotesForTeam() {
+  fetch(API_URL + '?action=getTeamNotes&password=' + encodeURIComponent(window.teamPass))
+  .then(res => res.json())
+  .then(result => {
+    if (result.success && result.data) {
+      teamNotes = {};
+      result.data.forEach(n => {
+        const key = (n['voter mobile'] || '').replace(/\D/g, '');
+        if (key) teamNotes[key] = n.status || '';
+      });
+      renderTeamVoterList();
+    }
+  }).catch(err => console.error(err));
 }
 
-/* ============================================================
-   WARD FILTERS
-   ============================================================ */
+/* WARD FILTERS */
 function populateWardFilter() {
   const select = document.getElementById('wardFilter');
   const wards = [...new Set(voterData.map(v => v.ward).filter(Boolean))];
   select.innerHTML = '<option value="">-- सभी वार्ड --</option>';
-  wards.forEach(w => {
-    const o = document.createElement('option'); o.value = w; o.textContent = w;
-    select.appendChild(o);
-  });
+  wards.forEach(w => { const o = document.createElement('option'); o.value = w; o.textContent = w; select.appendChild(o); });
 }
-
 function populateTeamWardFilter() {
   const select = document.getElementById('teamWardFilter');
   const wards = [...new Set(voterData.map(v => v.ward).filter(Boolean))];
   select.innerHTML = '<option value="">-- सभी वार्ड --</option>';
-  wards.forEach(w => {
-    const o = document.createElement('option'); o.value = w; o.textContent = w;
-    select.appendChild(o);
-  });
+  wards.forEach(w => { const o = document.createElement('option'); o.value = w; o.textContent = w; select.appendChild(o); });
 }
 
-/* ============================================================
-   ADMIN VOTER LIST
-   ============================================================ */
+/* ADMIN VOTER LIST */
 function renderVoterList() {
   const statusEl = document.getElementById('voterStatus');
   const tableWrap = document.getElementById('voterTableWrap');
   const tbody = document.getElementById('voterTableBody');
-
   const wardFilter = document.getElementById('wardFilter').value;
   const search = document.getElementById('searchBox').value.trim().toLowerCase();
-
   let filtered = voterData;
   if (wardFilter) filtered = filtered.filter(v => v.ward === wardFilter);
   if (search) filtered = filtered.filter(v =>
-    (v['voter name']||'').toLowerCase().includes(search) ||
-    (v['father/husband name']||'').toLowerCase().includes(search) ||
-    (v.mobile||'').includes(search)
+    (v['नाम']||'').toLowerCase().includes(search) ||
+    (v['पिता/पति']||'').toLowerCase().includes(search) ||
+    (v['मोबाइल']||'').includes(search) ||
+    (v['epic id']||'').toLowerCase().includes(search)
   );
-
   tbody.innerHTML = '';
-  if (filtered.length === 0) {
-    tableWrap.style.display = 'none';
-    statusEl.textContent = 'कोई मतदाता नहीं मिला।';
-    return;
-  }
-
+  if (filtered.length === 0) { tableWrap.style.display = 'none'; statusEl.textContent = 'कोई मतदाता नहीं मिला।'; return; }
   filtered.forEach(v => {
     const tr = document.createElement('tr');
-    const cleanMobile = (v.mobile||'').replace(/\D/g,'');
+    const cleanMobile = (v['मोबाइल']||'').replace(/\D/g,'');
+    const voterName = v['नाम']||'';
     let actionBtns = '';
     if (cleanMobile.length >= 10) {
       const cn = cleanMobile.length===10 ? '+91'+cleanMobile : cleanMobile;
       const wn = cleanMobile.length===10 ? '91'+cleanMobile : cleanMobile;
-      const msg = encodeURIComponent(`नमस्ते ${v['voter name']||''}, मैं Samlipathar चुनाव में आपसे संपर्क कर रहा हूँ।`);
-      actionBtns = `<div class="action-btns">
-        <a href="tel:${cn}" class="btn-call">📞</a>
-        <a href="https://wa.me/${wn}?text=${msg}" target="_blank" class="btn-wa">💬</a>
-      </div>`;
-    } else {
-      actionBtns = `<span class="btn-call disabled">📞</span>`;
-    }
-
+      const msg = encodeURIComponent(`नमस्ते ${voterName}, मैं Samlipathar चुनाव में आपसे संपर्क कर रहा हूँ।`);
+      actionBtns = `<div class="action-btns"><a href="tel:${cn}" class="btn-call">📞</a><a href="https://wa.me/${wn}?text=${msg}" target="_blank" class="btn-wa">💬</a></div>`;
+    } else { actionBtns = `<span class="btn-call disabled">📞</span>`; }
     const note = teamNotes[cleanMobile] || '';
-    let noteBadge = '';
-    if (note === 'Support') noteBadge = '<span style="background:#25D366;color:white;padding:3px 8px;border-radius:12px;font-size:0.75rem;">✅ Support</span>';
-    else if (note === 'Not Support') noteBadge = '<span style="background:#d32f2f;color:white;padding:3px 8px;border-radius:12px;font-size:0.75rem;">❌ No</span>';
-    else if (note === 'In Team') noteBadge = '<span style="background:#1976d2;color:white;padding:3px 8px;border-radius:12px;font-size:0.75rem;">👥 Team</span>';
+    let noteBadge = '<span style="color:#627d98;font-size:0.8rem;">—</span>';
+    if (note === 'Support') noteBadge = '<span style="background:#25D366;color:white;padding:3px 8px;border-radius:12px;font-size:0.75rem;">✅</span>';
+    else if (note === 'Not Support') noteBadge = '<span style="background:#d32f2f;color:white;padding:3px 8px;border-radius:12px;font-size:0.75rem;">❌</span>';
+    else if (note === 'In Team') noteBadge = '<span style="background:#1976d2;color:white;padding:3px 8px;border-radius:12px;font-size:0.75rem;">👥</span>';
     else if (note === 'Undecided') noteBadge = '<span style="background:#f5b301;color:#0b3d2e;padding:3px 8px;border-radius:12px;font-size:0.75rem;">🤔</span>';
-    else noteBadge = '<span style="color:#627d98;font-size:0.8rem;">—</span>';
-
     tr.innerHTML = `
-      <td><input type="checkbox" class="voter-check" data-mobile="${cleanMobile}" data-name="${escapeHtml(v['voter name']||'')}"></td>
+      <td><input type="checkbox" class="voter-check" data-mobile="${cleanMobile}" data-name="${escapeHtml(voterName)}"></td>
       <td><span class="ward-badge">${escapeHtml(v.ward||'-')}</span></td>
-      <td>${escapeHtml(v['voter name']||'-')}</td>
-      <td>${escapeHtml(v['father/husband name']||'-')}</td>
-      <td>${escapeHtml(v.age||'-')}</td>
-      <td>${escapeHtml(v.gender||'-')}</td>
-      <td>${escapeHtml(v.mobile||'-')}</td>
+      <td>${escapeHtml(v['क्र.सं.']||'-')}</td>
+      <td>${escapeHtml(v['epic id']||'-')}</td>
+      <td>${escapeHtml(voterName)}</td>
+      <td>${escapeHtml(v['पिता/पति']||'-')}</td>
+      <td>${escapeHtml(v['मकान संख्या']||'-')}</td>
+      <td>${escapeHtml(v['आयु']||'-')}</td>
+      <td>${escapeHtml(v['लिंग']||'-')}</td>
+      <td>${escapeHtml(v['गाँव']||'-')}</td>
+      <td>${escapeHtml(v['मोबाइल']||'-')}</td>
       <td>${actionBtns}</td>
       <td>${noteBadge}</td>
     `;
     tbody.appendChild(tr);
   });
-
   tableWrap.style.display = 'block';
   statusEl.textContent = `कुल ${filtered.length} मतदाता।`;
 }
 
-/* ============================================================
-   TEAM VOTER LIST
-   ============================================================ */
+/* TEAM VOTER LIST */
 function renderTeamVoterList() {
   const statusEl = document.getElementById('teamVoterStatus');
   const tableWrap = document.getElementById('teamVoterTableWrap');
   const tbody = document.getElementById('teamVoterTableBody');
-
   const wardFilter = document.getElementById('teamWardFilter').value;
   const search = document.getElementById('teamSearchBox').value.trim().toLowerCase();
-
   let filtered = voterData;
   if (wardFilter) filtered = filtered.filter(v => v.ward === wardFilter);
-  if (search) filtered = filtered.filter(v => (v['voter name']||'').toLowerCase().includes(search));
-
+  if (search) filtered = filtered.filter(v => (v['नाम']||'').toLowerCase().includes(search));
   tbody.innerHTML = '';
-  if (filtered.length === 0) {
-    tableWrap.style.display = 'none';
-    statusEl.textContent = 'कोई मतदाता नहीं मिला।';
-    return;
-  }
-
+  if (filtered.length === 0) { tableWrap.style.display = 'none'; statusEl.textContent = 'कोई मतदाता नहीं मिला।'; return; }
   filtered.forEach(v => {
     const tr = document.createElement('tr');
-    const cleanMobile = (v.mobile||'').replace(/\D/g,'');
+    const cleanMobile = (v['मोबाइल']||'').replace(/\D/g,'');
     const note = teamNotes[cleanMobile] || '';
-
+    const voterName = escapeHtml(v['नाम']||'');
     tr.innerHTML = `
       <td><span class="ward-badge">${escapeHtml(v.ward||'-')}</span></td>
-      <td>${escapeHtml(v['voter name']||'-')}</td>
-      <td>${escapeHtml(v['father/husband name']||'-')}</td>
-      <td>${escapeHtml(v.age||'-')}</td>
-      <td>${escapeHtml(v.mobile||'-')}</td>
+      <td>${voterName}</td>
+      <td>${escapeHtml(v['पिता/पति']||'-')}</td>
+      <td>${escapeHtml(v['आयु']||'-')}</td>
+      <td>${escapeHtml(v['मोबाइल']||'-')}</td>
       <td>
         <div class="note-btns">
-          <button class="note-btn note-support" onclick="saveNote('${cleanMobile}','${escapeHtml(v['voter name']||'')}','Support')">✅</button>
-          <button class="note-btn note-not" onclick="saveNote('${cleanMobile}','${escapeHtml(v['voter name']||'')}','Not Support')">❌</button>
-          <button class="note-btn note-team" onclick="saveNote('${cleanMobile}','${escapeHtml(v['voter name']||'')}','In Team')">👥</button>
-          <button class="note-btn note-undecided" onclick="saveNote('${cleanMobile}','${escapeHtml(v['voter name']||'')}','Undecided')">🤔</button>
+          <button class="note-btn note-support" onclick="saveNote('${cleanMobile}','${voterName.replace(/'/g,"")}','Support')">✅</button>
+          <button class="note-btn note-not" onclick="saveNote('${cleanMobile}','${voterName.replace(/'/g,"")}','Not Support')">❌</button>
+          <button class="note-btn note-team" onclick="saveNote('${cleanMobile}','${voterName.replace(/'/g,"")}','In Team')">👥</button>
+          <button class="note-btn note-undecided" onclick="saveNote('${cleanMobile}','${voterName.replace(/'/g,"")}','Undecided')">🤔</button>
         </div>
-        <div style="margin-top:4px; font-size:0.78rem; color:#627d98;">${note ? 'नोट: '+note : 'नोट नहीं'}</div>
+        <div style="margin-top:4px; font-size:0.75rem; color:#627d98;">${note?'नोट: '+note:'—'}</div>
       </td>
     `;
     tbody.appendChild(tr);
   });
-
   tableWrap.style.display = 'block';
   statusEl.textContent = `कुल ${filtered.length} मतदाता।`;
 }
 
+/* SAVE NOTE */
 function saveNote(mobile, name, status) {
-  const password = isAdmin ? document.getElementById('adminPassword').value : document.getElementById('teamPassword').value;
-
-  const body = 'action=saveNote'
-    + '&password=' + encodeURIComponent(password)
-    + '&voterMobile=' + encodeURIComponent(mobile)
-    + '&voterName=' + encodeURIComponent(name)
-    + '&status=' + encodeURIComponent(status)
-    + '&teamMember=' + encodeURIComponent(currentTeamName || 'Admin');
-
-  fetch(API_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body
-  })
-  .then(() => {
-    teamNotes[mobile] = status;
-    if (isAdmin) renderVoterList();
-    else renderTeamVoterList();
-    alert('नोट सेव हो गया: ' + status);
-  })
-  .catch(err => { console.error(err); alert('सेव नहीं हो सका।'); });
+  const password = isAdmin ? document.getElementById('adminPassword').value : window.teamPass;
+  const url = API_URL + '?action=saveNote&password=' + encodeURIComponent(password) + '&voterMobile=' + encodeURIComponent(mobile) + '&voterName=' + encodeURIComponent(name) + '&status=' + encodeURIComponent(status) + '&teamMember=' + encodeURIComponent(currentTeamName || 'Admin');
+  fetch(url).then(res => res.json()).then(result => {
+    if (result.success) {
+      teamNotes[mobile] = status;
+      if (isAdmin) renderVoterList(); else renderTeamVoterList();
+    } else { alert('सेव नहीं हुआ।'); }
+  }).catch(err => { console.error(err); alert('सेव नहीं हो सका।'); });
 }
 
-/* ============================================================
-   SELECT ALL / BROADCAST
-   ============================================================ */
+/* SELECT / BROADCAST */
 function selectAllFiltered() { document.querySelectorAll('.voter-check').forEach(cb => cb.checked = true); }
 function clearSelection() { document.querySelectorAll('.voter-check').forEach(cb => cb.checked = false); }
-
 function broadcastWhatsApp() {
   const selected = [];
   document.querySelectorAll('.voter-check:checked').forEach(cb => {
@@ -821,12 +661,10 @@ function broadcastWhatsApp() {
   });
   if (selected.length === 0) { alert('कृपया मतदाता चुनें।'); return; }
   if (selected.length > 15 && !confirm(`${selected.length} टैब खुलेंगे। जारी?`)) return;
-
   const template = `नमस्ते {NAME}, मैं Samlipathar चुनाव में आपसे संपर्क कर रहा हूँ। आपका सहयोग चाहिए। 🙏`;
   broadcastQueue = selected; broadcastIndex = 0;
   openNextBroadcast(template);
 }
-
 function openNextBroadcast(template) {
   if (broadcastIndex >= broadcastQueue.length) {
     alert(`✅ ${broadcastQueue.length} WhatsApp टैब खोले गए।`);
@@ -839,15 +677,14 @@ function openNextBroadcast(template) {
   setTimeout(() => openNextBroadcast(template), 800);
 }
 
-/* ============================================================
-   CSV DOWNLOAD
-   ============================================================ */
+/* CSV */
 function downloadCSV() {
   if (voterData.length === 0) { alert('डेटा नहीं है।'); return; }
-  const headers = ['Ward','Voter Name','Father/Husband Name','Age','Gender','Mobile'];
+  const headers = ['Ward','क्र.सं.','EPIC ID','नाम','पिता/पति','मकान संख्या','आयु','लिंग','गाँव','मोबाइल'];
   const rows = [headers];
   voterData.forEach(v => rows.push([
-    v.ward||'', v['voter name']||'', v['father/husband name']||'', v.age||'', v.gender||'', v.mobile||''
+    v.ward||'', v['क्र.सं.']||'', v['epic id']||'', v['नाम']||'', v['पिता/पति']||'',
+    v['मकान संख्या']||'', v['आयु']||'', v['लिंग']||'', v['गाँव']||'', v['मोबाइल']||''
   ]));
   const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob = new Blob(['\uFEFF'+csv], { type:'text/csv;charset=utf-8;' });
@@ -857,14 +694,10 @@ function downloadCSV() {
   a.click();
 }
 
-/* ============================================================
-   SHOW VOLUNTEERS / TEAM / NOTES (Admin)
-   ============================================================ */
+/* SHOW LISTS */
 function showVolunteers() { toggleList('volunteerList','volunteerTableBody','getVolunteers',['timestamp','name','mobile','village','message']); }
 function showTeamMembers() { toggleList('teamMembersList','teamMembersTableBody','getTeamMembers',['timestamp','name','mobile','ward']); }
 function showTeamNotes() { toggleList('teamNotesList','teamNotesTableBody','getTeamNotes',['timestamp','voter mobile','voter name','status','team member']); }
-function showTeamNotesByMe() { loadTeamNotes(); alert('नोट्स लोड हो गए।'); }
-
 function toggleList(wrapId, tbodyId, action, cols) {
   const wrap = document.getElementById(wrapId);
   const tbody = document.getElementById(tbodyId);
@@ -892,37 +725,24 @@ function toggleList(wrapId, tbodyId, action, cols) {
   });
 }
 
-/* ============================================================
-   VOLUNTEER SUBMIT
-   ============================================================ */
+/* VOLUNTEER */
 function submitVolunteer(e) {
   e.preventDefault();
   const btn = document.getElementById('volSubmitBtn');
-  const body = 'action=volunteer'
-    + '&name=' + encodeURIComponent(document.getElementById('volName').value)
-    + '&mobile=' + encodeURIComponent(document.getElementById('volMobile').value)
-    + '&village=' + encodeURIComponent(document.getElementById('volVillage').value)
-    + '&message=' + encodeURIComponent(document.getElementById('volMessage').value);
-
+  const url = API_URL + '?action=volunteer&name=' + encodeURIComponent(document.getElementById('volName').value) + '&mobile=' + encodeURIComponent(document.getElementById('volMobile').value) + '&village=' + encodeURIComponent(document.getElementById('volVillage').value) + '&message=' + encodeURIComponent(document.getElementById('volMessage').value);
   btn.disabled = true; btn.textContent = 'भेज...';
-  fetch(API_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body
-  })
-  .then(() => {
-    alert('🙏 धन्यवाद! हम जल्द संपर्क करेंगे।');
-    document.getElementById('volunteerForm').reset();
-  })
-  .catch(err => { console.error(err); alert('भेज नहीं सके।'); })
+  fetch(url).then(res => res.json()).then(result => {
+    if (result.success) {
+      alert('🙏 धन्यवाद! हम जल्द संपर्क करेंगे।');
+      document.getElementById('volunteerForm').reset();
+    } else { alert('भेज नहीं सके।'); }
+  }).catch(err => { console.error(err); alert('भेज नहीं सके।'); })
   .finally(() => { btn.disabled = false; btn.textContent = 'जुड़ें'; });
 }
 
-/* ============================================================
-   LOGOUT
-   ============================================================ */
+/* LOGOUT */
 function logout() {
-  isAdmin = isTeam = false; voterData = []; currentTeamName = '';
+  isAdmin = isTeam = false; voterData = []; currentTeamName = ''; teamNotes = {}; window.teamPass = '';
   document.getElementById('adminPassword').value = '';
   document.getElementById('teamPassword').value = '';
   document.getElementById('adminPanel').classList.remove('visible');
@@ -935,13 +755,10 @@ function logout() {
   document.getElementById('teamLoginError').textContent = '';
 }
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
+/* HELPERS */
 function escapeHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function setLang(lang) {
   currentLang = lang;
   document.getElementById('btn-hi').classList.toggle('active', lang === 'hi');
@@ -949,9 +766,7 @@ function setLang(lang) {
   try { localStorage.setItem('samlipathar-lang', lang); } catch(e) {}
 }
 
-/* ============================================================
-   INIT
-   ============================================================ */
+/* INIT */
 (function init() {
   let saved = null;
   try { saved = localStorage.getItem('samlipathar-lang'); } catch(e) {}
